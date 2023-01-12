@@ -1,0 +1,34 @@
+{
+  "name": "izt-backend",
+  "version": "1.0.0",
+  "description": "Backend do projeto IZT",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpejr/IZT-backend.git"
+  },
+  "author": "CPE",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cpejr/IZT-backend/issues"
+  },
+  "homepage": "https://github.com/cpejr/IZT-backend#readme",
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "eslint": "8.2.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-plugin-react-hooks": "4.3.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.8.2"
+  }
+}
