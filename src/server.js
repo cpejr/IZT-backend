@@ -19,7 +19,7 @@ const isDevEnvironment = process.env.NODE_ENV === 'development';
 const app = express();
 
 // Middlewares
-app.use(express.static(path.join(__dirname, '../../client/dist'))); // Não necessário para outros projetos
+//app.use(express.static(path.join(__dirname, '../../client/dist'))); // Não necessário para outros projetos
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors(corsOptions));
