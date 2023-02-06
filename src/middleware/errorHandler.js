@@ -1,3 +1,4 @@
+import { z, ZodError } from 'zod';
 import AppError from '../errors/AppError/AppError.js';
 import BadRequest from '../errors/BadRequest/BadRequest.js';
 import JwtInvalidError from '../errors/JwtInvalidError/JwtInvalidError.js';
@@ -5,7 +6,6 @@ import JwtExpiredError from '../errors/JwtExpiredError/JwtExpiredError.js';
 import InternalServerError from '../errors/InternalServerError/InternalServerError.js';
 import ConflictError from '../errors/ConflictError/ConflictError.js';
 import logger from '../config/logger.js';
-import { z } from 'zod';
 
 
 const userLogin = z.object ({
@@ -33,7 +33,21 @@ const formsBudget = z.object ({
     address: z.string().max(50).min(5),
 });
 
-const errorHandler = (err, req, res, next) => {
-    let error;
+async function errorHandler(
+  rawData: any
+): Promise<{success: Boolean; errors: any}> {
+    try{
+        const data = userLogin.parse(rawData);
+    }
+    catch(e) {
+        if(e instanceof ZodError) {
+            return { succes: false, errors: e.flatten()}
+        } else {
+          throw e;
+        }
+    }
+
+
+
 };
 export default errorHandler;
