@@ -1,4 +1,4 @@
-import { z, ZodError } from 'zod';
+import { ZodError } from 'zod';
 import AppError from '../errors/AppError/AppError.js';
 import BadRequest from '../errors/BadRequest/BadRequest.js';
 import JwtInvalidError from '../errors/JwtInvalidError/JwtInvalidError.js';
@@ -6,12 +6,13 @@ import JwtExpiredError from '../errors/JwtExpiredError/JwtExpiredError.js';
 import InternalServerError from '../errors/InternalServerError/InternalServerError.js';
 import ConflictError from '../errors/ConflictError/ConflictError.js';
 
-const errorHandler = (err, req, res, next) =>{
+const errorHandler = (err, req, res) => {
   let error;
 
   if (err instanceof AppError) {
     error = err;
   } else if (err instanceof ZodError) {
+    // eslint-disable-next-line no-shadow
     const message = err.errors.map(({ message }) => message).join('; ');
     error = new BadRequest(`Request validation error(s): ${message}`);
   } else if (err.name === 'ValidationError') {
