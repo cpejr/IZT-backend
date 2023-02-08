@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-CategoryRoutes = Router();
+const CategoryRoutes = Router();
 
 CategoryRoutes.get('/' /*CategoryValidator*/ /*CategoryController*/);
 

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-ProductRoutes = Router();
+const ProductRoutes = Router();
 
 ProductRoutes.get('/' /*ProductValidator*/ /*ProductController*/);
 

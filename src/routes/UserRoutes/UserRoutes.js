@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-UserRoutes = Router();
+const UserRoutes = Router();
 
 UserRoutes.get('/' /*UserValidator*/ /*UserController*/);
 UserRoutes.put('/' /*UserValidator*/ /*UserController*/);
