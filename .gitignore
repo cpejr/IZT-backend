@@ -8,8 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.env
 *.local
 .editorconfig
+.env
 
 # Editor directories and files
 .vscode/*
@@ -21,3 +23,6 @@ node_modules
 *.njsproj
 *.sln
 *.sw?
+
+#dotenv
+.env
