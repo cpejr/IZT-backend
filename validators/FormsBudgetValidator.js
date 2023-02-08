@@ -10,4 +10,5 @@ export const formsBudget = z.object ({
     city: z.string().max(30).min(4),
     ZIPcode: z.string().max(8).min(5),
     address: z.string().max(50).min(5),
-});
+})
+.transform(({ formsBudget }) => formsBudget);

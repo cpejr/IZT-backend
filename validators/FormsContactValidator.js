@@ -6,4 +6,5 @@ export const formsContact = z.object ({
     email: z.string().email(),
     telephone: z.string().max(15),
     menssage: z.string().max(1500).min(20),
-});
+})
+.transform(({ formsContact }) => formsContact);
