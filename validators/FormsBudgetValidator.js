@@ -17,7 +17,7 @@ const formsBudget = z
       telephone: z
         .string({ required_error: 'Telephone is required' })
         .max(15, { message: 'Telephone must be a maximum of 15 characters' })
-        .regex(/\d/),
+        .regex(/^\+(?:[0-9]●?){6,14}[0-9]$/, 'Zip code bad formatted'),
 
       country: z
         .string({ required_error: 'Country is required' })
@@ -37,7 +37,8 @@ const formsBudget = z
       ZIPcode: z
         .string({ required_error: 'ZIPcode is required' })
         .max(8, { message: 'ZIPcode must be a maximum of 8 characters' })
-        .min(5, { message: 'ZIPcode must be atleast 5 characters' }),
+        .min(5, { message: 'ZIPcode must be atleast 5 characters' })
+        .regex(/^[0-9]{5}(?:-[0-9]{4})?$/, 'Zip code bad formatted'),
 
       address: z
         .string({ required_error: 'Adress is required' })
