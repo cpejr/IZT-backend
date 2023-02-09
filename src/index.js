@@ -1,10 +1,10 @@
-import express from 'express';
+import app from './server.js';
 
-const app = express();
-const PORT = process.env.PORT || 3030;
-
-// your code
-
-app.listen(PORT, () => {
-  console.log(`server started on port ${PORT}`);
+const PORT = process.env.PORT || 3333;
+app.listen(PORT, async () => {
+  try {
+    console.log(`✅ Server started at port ${PORT}`);
+  } catch (err) {
+    console.error(err.message, err);
+  }
 });
