@@ -11,3 +11,5 @@ routes
   .use('/categories', CategoryRoutes)
   .use('/products', ProductRoutes)
   .use('/users', UserRoutes);
+
+export default routes;
