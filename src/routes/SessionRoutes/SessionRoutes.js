@@ -1,8 +1,9 @@
 import { Router } from 'express';
 
-const SessionssRouter = Router();
-SessionssRouter.post('/login', SessionsController.handleLogin);
-SessionssRouter.post('/logout', SessionsController.handleLogout);
-SessionssRouter.get('/refresh', SessionsController.handleRefreshToken);
+const SessionRoutes = Router();
 
-export default SessionssRouter;
+SessionRoutes.post('/login' /* SessionsController.handleLogin */);
+SessionRoutes.post('/logout' /* SessionsController.handleLogout */);
+SessionRoutes.get('/refresh' /* SessionsController.handleRefreshToken */);
+
+export default SessionRoutes;

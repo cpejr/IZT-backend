@@ -1,12 +1,11 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-CategoryRoutes = Router();
+const CategoryRoutes = Router();
 
-CategoryRoutes.get('/', /*CategoryValidator*//*CategoryController*/)
+CategoryRoutes.route('/')
+  .get(/* CategoryValidator, CategoryController */)
+  .post(/* CategoryValidator, CategoryController */)
+  .put(/* CategoryValidator, CategoryController */)
+  .delete(/* CategoryValidator, CategoryController */);
 
-//Exclusively for admin
-CategoryRoutes.post('/', /*CategoryValidator*//*CategoryController*/)
-CategoryRoutes.put('/', /*CategoryValidator*//*CategoryController*/)
-CategoryRoutes.delete('/', /*CategoryValidator*//*CategoryController*/)
-
-export default CategoryRouter;
+export default CategoryRoutes;

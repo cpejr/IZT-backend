@@ -1,12 +1,11 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-UserRoutes = Router();
+const UserRoutes = Router();
 
-UserRoutes.get('/', /*UserValidator*//*UserController*/)
-UserRoutes.put('/', /*UserValidator*//*UserController*/)
+UserRoutes.route('/')
+  .get(/* UserValidator, UserController */)
+  .post(/* UserValidator, UserController */)
+  .put(/* UserValidator, UserController */)
+  .delete(/* UserValidator, UserController */);
 
-//Exclusively for admin
-UserRoutes.post('/', /*UserValidator*//*UserController*/)
-UserRoutes.delete('/', /*UserValidator*//*UserController*/)
-
-export default UserRouter;
+export default UserRoutes;

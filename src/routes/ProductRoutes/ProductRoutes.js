@@ -1,12 +1,12 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-ProductRoutes = Router();
+const ProductRoutes = Router();
 
-ProductRoutes.get('/', /*ProductValidator*//*ProductController*/)
+// Exclusively for admin
+ProductRoutes.route('/')
+  .get(/* ProductValidator, ProductController */)
+  .post(/* ProductValidator, ProductController */)
+  .put(/* ProductValidator, ProductController */)
+  .delete(/* ProductValidator, ProductController */);
 
-//Exclusively for admin
-ProductRoutes.post('/', /*ProductValidator*//*ProductController*/)
-ProductRoutes.put('/', /*ProductValidator*//*ProductController*/)
-ProductRoutes.delete('/', /*ProductValidator*//*ProductController*/)
-
-export default ProductRouter;
+export default ProductRoutes;
