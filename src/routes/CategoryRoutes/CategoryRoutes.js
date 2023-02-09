@@ -8,3 +8,5 @@ CategoryRoutes.route('/')
   .post(/* CategoryValidator, CategoryController */)
   .put(/* CategoryValidator, CategoryController */)
   .delete(/* CategoryValidator, CategoryController */);
+
+export default CategoryRoutes;

@@ -8,3 +8,5 @@ UserRoutes.route('/')
   .post(/* UserValidator, UserController */)
   .put(/* UserValidator, UserController */)
   .delete(/* UserValidator, UserController */);
+
+export default UserRoutes;
