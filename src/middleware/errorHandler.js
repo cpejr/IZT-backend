@@ -1,10 +1,12 @@
 import { ZodError } from 'zod';
-import AppError from '../errors/AppError/AppError.js';
-import BadRequest from '../errors/BadRequest/BadRequest.js';
-import JwtInvalidError from '../errors/JwtInvalidError/JwtInvalidError.js';
-import JwtExpiredError from '../errors/JwtExpiredError/JwtExpiredError.js';
-import InternalServerError from '../errors/InternalServerError/InternalServerError.js';
-import ConflictError from '../errors/ConflictError/ConflictError.js';
+import {
+  AppError,
+  BadRequest,
+  JwtInvalidError,
+  JwtExpiredError,
+  ConflictError,
+  InternalServerError,
+} from '../errors/BaseErrors';
 
 const errorHandler = (err, req, res) => {
   let error;
