@@ -5,27 +5,40 @@ export const getProductValidator = validate(
   z.object({
     body: z.object({
       name: z
-        .string({ required_error: 'Name is required' })
+        .string()
         .min(2, { required_error: 'Name must be at least 2 characters' })
         .max(20, { required_error: 'Name must be a maximum of 20 characters' })
         .optional(),
 
       category: z
-        .string({ required_error: 'Category is required' })
+        .string()
         .min(3, { required_error: 'Name must be at least 3 characters' })
         .max(20, { required_error: 'Name must be a maximum of 20 characters' })
         .optional(),
 
       picture: z.string().optional(),
 
-      description: z.string().optional(),
+      description: z
+        .string()
+        .min(50, {
+          required_error: 'Description must be at least 50 characters',
+        })
+        .max(150, {
+          required_error: 'Description must be a maximum of 150 characters',
+        })
+        .optional(),
 
       documents: z.file().optional(),
 
-      uptadeAt: z.date({ required_error: 'Uptade date is required' }),
+      createdAt: z.date().optional(),
+
+      uptadeAt: z.date().optional(),
+    }),
+    query: z.object({
+      id: z.string({ required_error: 'Product ID is required' }),
     }),
   })
-); // ?
+);
 
 export const createProductValidator = validate(
   z.object({
@@ -66,14 +79,30 @@ export const createProductValidator = validate(
 export const updateProductValidator = validate(
   z.object({
     body: z.object({
-      name: z.string({ required_error: 'Name is required' }).optional(),
+      name: z
+        .string({ required_error: 'Name is required' })
+        .min(2, { required_error: 'Name must be at least 2 characters' })
+        .max(20, { required_error: 'Name must be a maximum of 20 characters' })
+        .optional(),
 
-      category: z.string({ required_error: 'Category is required' }).optional(),
+      category: z
+        .string({ required_error: 'Category is required' })
+        .min(3, { required_error: 'Category must be at least 3 characters' })
+        .max(20, {
+          required_error: 'Category must be a maximum of 20 characters',
+        })
+        .optional(),
 
       picture: z.file({ required_error: 'Picture is required' }).optional(),
 
       description: z
         .string({ required_error: 'Description is required' })
+        .min(50, {
+          required_error: 'Description must be at least 50 characters',
+        })
+        .max(150, {
+          required_error: 'Description must be a maximum of 150 characters',
+        })
         .optional(),
 
       documents: z
