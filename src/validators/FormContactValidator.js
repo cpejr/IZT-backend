@@ -24,6 +24,8 @@ export const createFormContactValidator = validate(
         .string({ required_error: 'Message is required' })
         .max(1500, { message: 'Message must be a maximum of 1500 characters' })
         .min(20, { message: 'Message must be atleast 20 characters' }),
+
+      params: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );
