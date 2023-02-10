@@ -4,9 +4,17 @@ import validate from '../config/validate.js';
 export const getProductValidator = validate(
   z.object({
     body: z.object({
-      name: z.string().optional(),
+      name: z
+        .string({ required_error: 'Name is required' })
+        .min(2, { required_error: 'Name must be at least 2 characters' })
+        .max(20, { required_error: 'Name must be a maximum of 20 characters' })
+        .optional(),
 
-      category: z.string().optional(),
+      category: z
+        .string({ required_error: 'Category is required' })
+        .min(3, { required_error: 'Name must be at least 3 characters' })
+        .max(20, { required_error: 'Name must be a maximum of 20 characters' })
+        .optional(),
 
       picture: z.string().optional(),
 
@@ -17,7 +25,8 @@ export const getProductValidator = validate(
       uptadeAt: z.date({ required_error: 'Uptade date is required' }),
     }),
   })
-);
+); // ?
+
 export const createProductValidator = validate(
   z.object({
     body: z.object({
@@ -53,15 +62,21 @@ export const createProductValidator = validate(
 export const updateProductValidator = validate(
   z.object({
     body: z.object({
-      name: z.string().optional(),
+      name: z.string({ required_error: 'Name is required' }).optional(),
 
-      category: z.string().optional(),
+      category: z.string({ required_error: 'Category is required' }).optional(),
 
-      picture: z.string().optional(),
+      picture: z.file({ required_error: 'Picture is required' }).optional(),
 
-      description: z.string().optional(),
+      description: z
+        .string({ required_error: 'Description is required' })
+        .optional(),
 
-      documents: z.file().optional(),
+      documents: z
+        .file({
+          required_error: 'At least one document is required',
+        })
+        .optional(),
 
       uptadeAt: z.date({ required_error: 'Uptade date is required' }),
     }),

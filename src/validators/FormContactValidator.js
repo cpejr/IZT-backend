@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import validate from '../config/validate.js';
 
-export const getFormContactValidator = validate(z.object());
+export const getFormContactValidator = validate(z.object()); // ?
 export const deleteProductValidator = validate(z.object());
 
 export const createFormContactValidator = validate(
