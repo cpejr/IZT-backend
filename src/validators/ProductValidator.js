@@ -5,6 +5,7 @@ export const getProductValidator = validate(z.object());
 export const createProductValidator = validate(z.object());
 export const updateProductValidator = validate(z.object());
 export const deleteProductValidator = validate(z.object());
+
 export const formsBudgetValidator = validate(
   z.object({
     body: z.object({
@@ -49,6 +50,8 @@ export const formsBudgetValidator = validate(
         .string({ required_error: 'Adress is required' })
         .max(50, { message: 'Adress must be a maximum of 50 characters' })
         .min(5, { message: 'Adress must be atleast 5 characters' }),
+
+      params: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );
