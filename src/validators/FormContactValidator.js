@@ -2,7 +2,7 @@ import { z } from 'zod';
 import validate from '../config/validate.js';
 
 export const getFormContactValidator = validate(z.object()); // ?
-export const deleteProductValidator = validate(z.object());
+export const deleteFormContactValidator = validate(z.object());
 
 export const createFormContactValidator = validate(
   z.object({
@@ -20,7 +20,7 @@ export const createFormContactValidator = validate(
       telephone: z
         .string({ required_error: 'Telephone is required' })
         .max(15, { message: 'Telephone must be a maximum of 15 characters' })
-        .regex(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Zip code bad formatted'),
+        .regex(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Telephone bad formatted'),
 
       menssage: z
         .string({ required_error: 'Message is required' })

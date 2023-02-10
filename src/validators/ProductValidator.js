@@ -37,16 +37,20 @@ export const createProductValidator = validate(
 
       category: z
         .string({ required_error: 'Category is required' })
-        .min(3, { required_error: 'Name must be at least 3 characters' })
-        .max(20, { required_error: 'Name must be a maximum of 20 characters' }),
+        .min(3, { required_error: 'Category must be at least 3 characters' })
+        .max(20, {
+          required_error: 'Category must be a maximum of 20 characters',
+        }),
 
       picture: z.file({ required_error: 'Picture is required' }),
 
       description: z
         .string({ required_error: 'Description is required' })
-        .min(50, { required_error: 'Name must be at least 50 characters' })
+        .min(50, {
+          required_error: 'Description must be at least 50 characters',
+        })
         .max(150, {
-          required_error: 'Name must be a maximum of 150 characters',
+          required_error: 'Description must be a maximum of 150 characters',
         }),
 
       documents: z.file({
@@ -112,7 +116,7 @@ export const formsBudgetValidator = validate(
       telephone: z
         .string({ required_error: 'Telephone is required' })
         .max(15, { message: 'Telephone must be a maximum of 15 characters' })
-        .regex(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Zip code bad formatted'),
+        .regex(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Telephone bad formatted'),
 
       country: z
         .string({ required_error: 'Country is required' })

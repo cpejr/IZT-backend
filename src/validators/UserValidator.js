@@ -23,7 +23,7 @@ export const updateUserValidator = validate(
       telephone: z
         .string({ required_error: 'Telephone is required' })
         .max(15, { message: 'Telephone must be a maximum of 15 characters' })
-        .regex(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Zip code bad formatted')
+        .regex(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Telephone bad formatted')
         .optional(),
 
       country: z
