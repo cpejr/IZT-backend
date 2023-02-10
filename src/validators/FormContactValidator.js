@@ -2,6 +2,9 @@ import { z } from 'zod';
 import validate from '../config/validate.js';
 
 export const getFormContactValidator = validate(z.object());
+export const updateFormContactValidator = validate(z.object());
+export const deleteFormContactValidator = validate(z.object());
+
 export const createFormContactValidator = validate(
   z.object({
     body: z.object({
@@ -24,10 +27,6 @@ export const createFormContactValidator = validate(
         .string({ required_error: 'Message is required' })
         .max(1500, { message: 'Message must be a maximum of 1500 characters' })
         .min(20, { message: 'Message must be atleast 20 characters' }),
-
-      params: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );
-export const updateFormContactValidator = validate(z.object());
-export const deleteFormContactValidator = validate(z.object());

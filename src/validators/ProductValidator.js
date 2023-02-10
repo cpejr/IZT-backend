@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import validate from '../config/validate.js';
 
-export const getProductValidator = validate(z.object());
+export const getProductValidator = validate(z.object()); //parece com o update, todas as propriedades sao opcionais, não precisa de ID
 export const createProductValidator = validate(z.object());
-export const updateProductValidator = validate(z.object());
-export const deleteProductValidator = validate(z.object());
+export const updateProductValidator = validate(z.object()); //optional, validar body e params pra ver o ID está vindo
+export const deleteProductValidator = validate(z.object()); //passar o parametro
 
 export const formsBudgetValidator = validate(
   z.object({
@@ -50,8 +50,10 @@ export const formsBudgetValidator = validate(
         .string({ required_error: 'Adress is required' })
         .max(50, { message: 'Adress must be a maximum of 50 characters' })
         .min(5, { message: 'Adress must be atleast 5 characters' }),
+    }),
 
-      params: z.string({ required_error: 'Product ID is required' }),
+    params: z.object({
+      id: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );
