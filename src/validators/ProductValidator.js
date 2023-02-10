@@ -1,10 +1,84 @@
 import { z } from 'zod';
 import validate from '../config/validate.js';
 
-export const getProductValidator = validate(z.object()); //parece com o update, todas as propriedades sao opcionais, não precisa de ID
-export const createProductValidator = validate(z.object());
-export const updateProductValidator = validate(z.object()); //optional, validar body e params pra ver o ID está vindo
-export const deleteProductValidator = validate(z.object()); //passar o parametro
+export const getProductValidator = validate(
+  z.object({
+    body: z.object({
+      name: z.string().optional(),
+
+      category: z.string().optional(),
+
+      picture: z.string().optional(),
+
+      description: z.string().optional(),
+
+      documents: z.file().optional(),
+
+      uptadeAt: z.date({ required_error: 'Uptade date is required' }),
+    }),
+  })
+);
+export const createProductValidator = validate(
+  z.object({
+    body: z.object({
+      name: z
+        .string({ required_error: 'Name is required' })
+        .min(2, { required_error: 'Name must be at least 2 characters' })
+        .max(20, { required_error: 'Name must be a maximum of 20 characters' }),
+
+      category: z
+        .string({ required_error: 'Category is required' })
+        .min(3, { required_error: 'Name must be at least 3 characters' })
+        .max(20, { required_error: 'Name must be a maximum of 20 characters' }),
+
+      picture: z.file({ required_error: 'Picture is required' }),
+
+      description: z
+        .string({ required_error: 'Description is required' })
+        .min(50, { required_error: 'Name must be at least 50 characters' })
+        .max(150, {
+          required_error: 'Name must be a maximum of 150 characters',
+        }),
+
+      documents: z.file({
+        required_error: 'At least one document is required',
+      }),
+
+      createdAt: z.date({ required_error: 'Created date is required' }),
+
+      uptadeAt: z.date({ required_error: 'Uptade date is required' }), // equal to de created date
+    }),
+  })
+);
+export const updateProductValidator = validate(
+  z.object({
+    body: z.object({
+      name: z.string().optional(),
+
+      category: z.string().optional(),
+
+      picture: z.string().optional(),
+
+      description: z.string().optional(),
+
+      documents: z.file().optional(),
+
+      uptadeAt: z.date({ required_error: 'Uptade date is required' }),
+    }),
+
+    params: z.object({
+      id: z.string({ required_error: 'Product ID is required' }),
+    }),
+  })
+);
+
+export const deleteProductValidator = validate(
+  z.object({
+    params: z.object({
+      id: z.string({ required_error: 'Product ID is required' }),
+    }),
+  })
+);
 
 export const formsBudgetValidator = validate(
   z.object({
