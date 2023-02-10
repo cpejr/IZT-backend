@@ -4,9 +4,9 @@ const UserRoutes = Router();
 
 // Exclusively for admin
 UserRoutes.route('/')
-  .get(/* UserValidator, UserController */)
-  .post(/* UserValidator, UserController */)
-  .put(/* UserValidator, UserController */)
-  .delete(/* UserValidator, UserController */);
+  .get(/* UserController */)
+  .post(/* UserController */)
+  .put(/* UserController */)
+  .delete(/* UserController */);
 
 export default UserRoutes;

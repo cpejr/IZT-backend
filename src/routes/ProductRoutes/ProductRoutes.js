@@ -4,9 +4,9 @@ const ProductRoutes = Router();
 
 // Exclusively for admin
 ProductRoutes.route('/')
-  .get(/* ProductValidator, ProductController */)
-  .post(/* ProductValidator, ProductController */)
-  .put(/* ProductValidator, ProductController */)
-  .delete(/* ProductValidator, ProductController */);
+  .get(/* ProductController */)
+  .post(/* ProductController */)
+  .put(/* ProductController */)
+  .delete(/* ProductController */);
 
 export default ProductRoutes;

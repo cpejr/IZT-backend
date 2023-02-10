@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import validate from '../config/validate';
+import validate from '../config/validate.js';
 
 const validator = z.object({
   body: z.object({
