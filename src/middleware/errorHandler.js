@@ -39,8 +39,8 @@ const errorHandler = (err, req, res) => {
   const isDevEnvironment =
     process.env.NODE_ENV === 'development'
       ? {
-        stack: error.stack,
-      }
+          stack: error.stack,
+        }
       : {};
   res.status(error.httpCode).json({
     name: error.name,
