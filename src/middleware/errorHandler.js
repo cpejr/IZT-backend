@@ -6,7 +6,7 @@ import {
   JwtExpiredError,
   ConflictError,
   InternalServerError,
-} from '../errors/BaseErrors';
+} from '../errors/BaseErrors.js';
 
 const errorHandler = (err, req, res) => {
   let error;
@@ -39,8 +39,8 @@ const errorHandler = (err, req, res) => {
   const isDevEnvironment =
     process.env.NODE_ENV === 'development'
       ? {
-          stack: error.stack,
-        }
+        stack: error.stack,
+      }
       : {};
   res.status(error.httpCode).json({
     name: error.name,
