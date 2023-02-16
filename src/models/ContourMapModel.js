@@ -4,16 +4,16 @@ const contourMapSchema = new mongoose.Schema(
   {
     data: {
       type: String,
-      required: true,
+      require: true,
     },
     name: {
       type: String,
-      required: true,
+      require: true,
     },
     user: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
-      required: true,
+      require: true,
     },
   },
   { timestamps: true }

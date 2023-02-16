@@ -4,29 +4,29 @@ const videoSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      require: true,
       unique: true, //Precisa mesmo desse unique?
     },
     theme: {
       type: String,
-      requiredd: true,
+      require: true,
     },
     course: {
       type: mongoose.Types.ObjectId,
       ref: 'Course',
-      required: true,
+      require: true,
     },
     description: {
       type: String,
-      required: true,
+      require: true,
     },
     duration: {
       type: Number,
-      required: true,
+      require: true,
     },
     file: {
       type: mongoose.Types.ObjectId,
-      required: true,
+      require: true,
     },
   },
   { timestamps: true }
