@@ -5,13 +5,13 @@ const userCertificateSchema = new mongoose.Schema(
     user: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
-      require: true,
+      required: true,
       unique: true,
     },
     course: {
       type: mongoose.Types.ObjectId,
       ref: 'Course'
-      require: true,
+      required: true,
      
     },
   },

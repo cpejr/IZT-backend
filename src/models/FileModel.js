@@ -4,24 +4,24 @@ const fileSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      require: true,
+      required: true,
     },
     size: {
       type: Number,
-      require: true,
+      required: true,
     },
     key: {
       type: String,
-      require: true,
+      required true,
       unique: true,
     },
     mimeType: {
       type: String,
-      require: true,
+      required: true,
     },
     url: {
       type: String,
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }

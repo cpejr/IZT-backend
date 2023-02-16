@@ -9,34 +9,34 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     userName: {
       type: String,
-      require: true,
+      required: true,
     },
     email: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     nacionality: {
       type: String,
-      require: true,
+      required: true,
     },
     cpf: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     birth: {
       type: Date,
-      require: true,
+      required: true,
     },
     birthPlace: {
       type: String,
-      require: true,
+      required: true,
     },
     gender: {
       type: String,
@@ -54,31 +54,31 @@ const userSchema = new mongoose.Schema(
     },
     telephone: {
       type: String,
-      require: true,
+      required: true,
     },
     state: {
       type: String,
-      require: true,
+      required: true,
     },
     city: {
       type: String,
-      require: true,
+      required: true,
     },
     cep: {
       type: String,
-      require: true,
+      required: true,
     },
     address: {
       type: String,
-      require: true,
+      required: true,
     },
     number: {
       type: String,
-      require: true,
+      required: true,
     },
     complement: {
       type: String,
-      require: true,
+      required: true,
     },
     district: {
       type: String,
@@ -86,7 +86,7 @@ const userSchema = new mongoose.Schema(
     },
     admissionDate: {
       type: Date,
-      require: true,
+      required: true,
     },
     courses: {
       type: [mongoose.Types.ObjectId],

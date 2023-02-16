@@ -5,11 +5,11 @@ const productSchema = new mongoose.Schema(
     category: {
       type: mongoose.Types.ObjectId,
       ref: 'Category',
-      require: true,
+      required: true,
     },
     name: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     purchases: {
@@ -23,12 +23,12 @@ const productSchema = new mongoose.Schema(
     },
     description: {
       type: String,
-      require: true,
+      required: true,
     },
     documents: {
       type: [mongoose.Types.ObjectId],
       ref: 'File',
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }
