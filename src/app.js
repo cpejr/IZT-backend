@@ -4,7 +4,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler.js';
-import corsOptions from './config/corsOptions.js';
+import corsOptions from './config/cors.js';
 import routes from './routes/index.js';
 
 const isDevEnvironment = process.env.NODE_ENV === 'development';
