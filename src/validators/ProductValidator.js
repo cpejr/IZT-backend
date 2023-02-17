@@ -1,41 +1,24 @@
 import { z } from 'zod';
 import validate from '../config/validate.js';
+import {
+  documentLimitInMB,
+  pictureLimitInMB,
+} from '../utils/files/limitsInMB.js';
+import {
+  documentMimeTypes,
+  pictureMimeTypes,
+} from '../utils/files/mimeTypes.js';
+import zodFileSchema from '../utils/files/zodFileSchema.js';
 
 export const getProductValidator = validate(
   z.object({
-    body: z.object({
-      name: z
-        .string()
-        .min(2, { required_error: 'Name must be at least 2 characters' })
-        .max(20, { required_error: 'Name must be a maximum of 20 characters' })
-        .optional(),
-
-      category: z
-        .string()
-        .min(3, { required_error: 'Name must be at least 3 characters' })
-        .max(20, { required_error: 'Name must be a maximum of 20 characters' })
-        .optional(),
-
-      picture: z.string().optional(),
-
-      description: z
-        .string()
-        .min(50, {
-          required_error: 'Description must be at least 50 characters',
-        })
-        .max(150, {
-          required_error: 'Description must be a maximum of 150 characters',
-        })
-        .optional(),
-
-      documents: z.file().optional(),
-
-      createdAt: z.date().optional(),
-
-      uptadeAt: z.date().optional(),
-    }),
     query: z.object({
-      id: z.string({ required_error: 'Product ID is required' }),
+      _id: z.string().optional(),
+      name: z.string().optional(),
+      category: z.string().optional(), // Query with the _id of the category
+      picture: z.string().optional(), // Query with the _id of one picture
+      description: z.string().optional(),
+      documents: z.string().optional(), // Query with the _id of one document
     }),
   })
 );
@@ -48,14 +31,7 @@ export const createProductValidator = validate(
         .min(2, { required_error: 'Name must be at least 2 characters' })
         .max(20, { required_error: 'Name must be a maximum of 20 characters' }),
 
-      category: z
-        .string({ required_error: 'Category is required' })
-        .min(3, { required_error: 'Category must be at least 3 characters' })
-        .max(20, {
-          required_error: 'Category must be a maximum of 20 characters',
-        }),
-
-      picture: z.file({ required_error: 'Picture is required' }),
+      category: z.string({ required_error: 'Category ID is required' }), // Here we need to pass the category id only
 
       description: z
         .string({ required_error: 'Description is required' })
@@ -65,38 +41,47 @@ export const createProductValidator = validate(
         .max(150, {
           required_error: 'Description must be a maximum of 150 characters',
         }),
-
-      documents: z.file({
-        required_error: 'At least one document is required',
-      }),
-
-      createdAt: z.date({ required_error: 'Created date is required' }),
-
-      uptadeAt: z.date({ required_error: 'Uptade date is required' }), // equal to de created date
+    }),
+    // Here is necessary to treat the object that comes from multer lib
+    files: z.object({
+      pictures: z
+        .array(
+          zodFileSchema({
+            fileName: 'Picture',
+            allowedMimeTypes: pictureMimeTypes,
+            sizeLimitInMB: pictureLimitInMB,
+          }),
+          {
+            required_error: 'Pictures are required',
+          }
+        )
+        .nonempty('Necessary at least one picture'),
+      documents: z
+        .array(
+          zodFileSchema({
+            fileName: 'Document',
+            allowedMimeTypes: documentMimeTypes,
+            sizeLimitInMB: documentLimitInMB,
+          }),
+          {
+            required_error: 'Documents are required',
+          }
+        )
+        .nonempty('Necessary at least one document'),
     }),
   })
 );
+
 export const updateProductValidator = validate(
   z.object({
     body: z.object({
       name: z
-        .string({ required_error: 'Name is required' })
+        .optional()
         .min(2, { required_error: 'Name must be at least 2 characters' })
-        .max(20, { required_error: 'Name must be a maximum of 20 characters' })
-        .optional(),
-
-      category: z
-        .string({ required_error: 'Category is required' })
-        .min(3, { required_error: 'Category must be at least 3 characters' })
-        .max(20, {
-          required_error: 'Category must be a maximum of 20 characters',
-        })
-        .optional(),
-
-      picture: z.file({ required_error: 'Picture is required' }).optional(),
-
+        .max(20, { required_error: 'Name must be a maximum of 20 characters' }),
+      category: z.string().optional(),
       description: z
-        .string({ required_error: 'Description is required' })
+        .string()
         .min(50, {
           required_error: 'Description must be at least 50 characters',
         })
@@ -104,16 +89,28 @@ export const updateProductValidator = validate(
           required_error: 'Description must be a maximum of 150 characters',
         })
         .optional(),
-
-      documents: z
-        .file({
-          required_error: 'At least one document is required',
-        })
-        .optional(),
-
-      uptadeAt: z.date({ required_error: 'Uptade date is required' }),
     }),
-
+    // Here is necessary to treat the object that comes from multer lib
+    files: z.object({
+      pictures: z
+        .array(
+          zodFileSchema({
+            fileName: 'Picture',
+            allowedMimeTypes: pictureMimeTypes,
+            sizeLimitInMB: pictureLimitInMB,
+          })
+        )
+        .optional(),
+      documents: z
+        .array(
+          zodFileSchema({
+            fileName: 'Document',
+            allowedMimeTypes: documentMimeTypes,
+            sizeLimitInMB: documentLimitInMB,
+          })
+        )
+        .optional(),
+    }),
     params: z.object({
       id: z.string({ required_error: 'Product ID is required' }),
     }),
@@ -134,9 +131,12 @@ export const formsBudgetValidator = validate(
       name: z
         .string({ required_error: 'Name is required' })
         .max(40, { message: 'Name must be a maximum of 40 characters' })
-        .min(10, { message: 'Name must be atleast 10 characters' }),
+        .min(3, { message: 'Name must be atleast 3 characters' }),
 
-      company: z.string({ required_error: 'Company name is required' }),
+      company: z
+        .string({ required_error: 'Company name is required' })
+        .max(40, { message: 'Name must be a maximum of 40 characters' })
+        .min(3, { message: 'Name must be atleast 3 characters' }),
 
       email: z
         .string({ required_error: 'Email is required' })

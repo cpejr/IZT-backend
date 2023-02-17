@@ -22,10 +22,10 @@ export const createFormContactValidator = validate(
         .max(15, { message: 'Telephone must be a maximum of 15 characters' })
         .regex(/^\+(?:[0-9] ?){6,14}[0-9]$/, 'Telephone bad formatted'),
 
-      menssage: z
+      message: z
         .string({ required_error: 'Message is required' })
         .max(1500, { message: 'Message must be a maximum of 1500 characters' })
-        .min(20, { message: 'Message must be atleast 20 characters' }),
+        .min(5, { message: 'Message must be atleast 5 characters' }),
     }),
   })
 );
