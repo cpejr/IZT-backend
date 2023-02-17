@@ -12,7 +12,11 @@ const fileSchema = new mongoose.Schema(
     },
     key: {
       type: String,
-      require: true,
+<<<<<<< HEAD
+      required true,
+=======
+      required: true,
+>>>>>>> ModelsAndControllers
       unique: true,
     },
     mimeType: {
@@ -21,7 +25,10 @@ const fileSchema = new mongoose.Schema(
     },
     url: {
       type: String,
-      require: true,
+<<<<<<< HEAD
+      required: true,
+=======
+>>>>>>> ModelsAndControllers
     },
   },
   { timestamps: true }

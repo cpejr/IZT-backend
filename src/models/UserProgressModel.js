@@ -8,8 +8,12 @@ const userProgressSchema = new mongoose.Schema(
     },
     user: {
       type: mongoose.Types.ObjectId,
+<<<<<<< HEAD
       ref: 'User'
-      require: true,
+=======
+      ref: 'User',
+>>>>>>> ModelsAndControllers
+      required: true,
       unique: true,
     },
     progress: {

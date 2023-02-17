@@ -10,13 +10,21 @@ const userCertificateSchema = new mongoose.Schema(
     },
     course: {
       type: mongoose.Types.ObjectId,
+<<<<<<< HEAD:src/models/UserCertificateModel.js
       ref: 'Course'
       require: true,
      
+=======
+      ref: 'Course',
+      required: true,
+>>>>>>> ModelsAndControllers:src/models/UserCertificate.js
     },
   },
   { timestamps: true }
 );
 
-const userCertificateModel = mongoose.model('User Certificate', userCertificateSchema);
+const userCertificateModel = mongoose.model(
+  'User Certificate',
+  userCertificateSchema
+);
 export default userCertificateModel;

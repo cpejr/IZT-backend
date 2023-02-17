@@ -9,8 +9,11 @@ const userSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      require: true,
+      required: true,
+<<<<<<< HEAD
       unique: true,
+=======
+>>>>>>> ModelsAndControllers
     },
     userName: {
       type: String,
@@ -82,7 +85,7 @@ const userSchema = new mongoose.Schema(
     },
     district: {
       type: String,
-      require: true,
+      required: true,
     },
     admissionDate: {
       type: Date,

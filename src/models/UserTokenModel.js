@@ -18,6 +18,10 @@ const userTokenSchema = new mongoose.Schema(
       required: true,
       unique: true, // é unique mesmo?
     },
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
   },
   { timestamps: true }
 );
