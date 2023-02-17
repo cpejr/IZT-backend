@@ -6,9 +6,10 @@ import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler.js';
 import corsOptions from './config/corsOptions.js';
 import routes from './routes/index.js';
+import logger from './config/logger.js';
 
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught exception', err);
+  logger.error(err, 'Uncaught exception');
   process.exit(1);
 });
 
@@ -32,7 +33,7 @@ app.use('/api', routes);
 app.use(errorHandler);
 
 process.on('unhandledRejection', (err) => {
-  console.error('Unhandled rejection', err);
+  logger.error(err, 'Unhandled rejection');
   process.exit(1);
 });
 

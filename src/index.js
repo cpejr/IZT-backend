@@ -1,13 +1,15 @@
 import 'dotenv/config';
+import logger from './config/logger.js';
 import mongoConfig from './config/mongo.js';
-import app from './server.js';
+import app from './app.js';
 
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, async () => {
   try {
     await mongoConfig();
-    console.log(`✅ Server started at port ${PORT}`);
+    logger.info(`✅ Server started at port ${PORT}`);
   } catch (err) {
-    console.error(err.message, err);
+    logger.error(err, err.message);
+    process.exit(1);
   }
 });

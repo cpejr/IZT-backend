@@ -1,14 +1,6 @@
 import { z } from 'zod';
 import validate from './validate.js';
-import {
-  documentLimitInMB,
-  pictureLimitInMB,
-} from '../utils/files/limitsInMB.js';
-import {
-  documentMimeTypes,
-  pictureMimeTypes,
-} from '../utils/files/mimeTypes.js';
-import zodFileSchema from '../utils/files/zodFileSchema.js';
+import { documentSchema, pictureSchema } from '../utils/files/zodSchemas.js';
 
 export const getProductValidator = validate(
   z.object({
@@ -45,28 +37,14 @@ export const createProductValidator = validate(
     // Here is necessary to treat the object that comes from multer lib
     files: z.object({
       pictures: z
-        .array(
-          zodFileSchema({
-            fileName: 'Picture',
-            allowedMimeTypes: pictureMimeTypes,
-            sizeLimitInMB: pictureLimitInMB,
-          }),
-          {
-            required_error: 'Pictures are required',
-          }
-        )
+        .array(pictureSchema, {
+          required_error: 'Pictures are required',
+        })
         .nonempty('Necessary at least one picture'),
       documents: z
-        .array(
-          zodFileSchema({
-            fileName: 'Document',
-            allowedMimeTypes: documentMimeTypes,
-            sizeLimitInMB: documentLimitInMB,
-          }),
-          {
-            required_error: 'Documents are required',
-          }
-        )
+        .array(documentSchema, {
+          required_error: 'Documents are required',
+        })
         .nonempty('Necessary at least one document'),
     }),
   })
@@ -92,24 +70,8 @@ export const updateProductValidator = validate(
     }),
     // Here is necessary to treat the object that comes from multer lib
     files: z.object({
-      pictures: z
-        .array(
-          zodFileSchema({
-            fileName: 'Picture',
-            allowedMimeTypes: pictureMimeTypes,
-            sizeLimitInMB: pictureLimitInMB,
-          })
-        )
-        .optional(),
-      documents: z
-        .array(
-          zodFileSchema({
-            fileName: 'Document',
-            allowedMimeTypes: documentMimeTypes,
-            sizeLimitInMB: documentLimitInMB,
-          })
-        )
-        .optional(),
+      pictures: z.array(pictureSchema).optional(),
+      documents: z.array(documentSchema).optional(),
     }),
     params: z.object({
       id: z.string({ required_error: 'Product ID is required' }),

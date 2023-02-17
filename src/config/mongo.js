@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import logger from './logger.js';
 
 export default function mongoConfig() {
   return new Promise((resolve, reject) => {
@@ -9,13 +10,13 @@ export default function mongoConfig() {
       `${encodeURI(process.env.MONGO_SERVER)}/?` +
       `${encodeURI(process.env.MONGO_OPTIONS)}`;
 
-    mongoose.connect(mongoUrl, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    mongoose.set('strictQuery', true);
+    mongoose.connect(mongoUrl);
 
     mongoose.connection.once('open', () => {
-      console.log('✅ Established connection with mongodb');
+      logger.info('✅ Established connection with mongodb');
+
+      mongoose.Promise = global.Promise;
       resolve();
     });
 

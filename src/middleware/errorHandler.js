@@ -1,4 +1,5 @@
 import { ZodError } from 'zod';
+import logger from '../config/logger.js';
 import {
   AppError,
   BadRequest,
@@ -7,6 +8,7 @@ import {
   ConflictError,
   InternalServerError,
 } from '../errors/BaseErrors.js';
+import isDevEnvironment from '../utils/isDevEnvironment.js';
 
 const errorHandler = (err, req, res) => {
   let error;
@@ -31,23 +33,17 @@ const errorHandler = (err, req, res) => {
     error = new InternalServerError(err?.message);
   }
 
-  console.error(
-    'Error message from the centralized error-handling component',
-    error
+  logger.error(
+    err,
+    'Error message from the centralized error-handling component'
   );
 
-  const isDevEnvironment =
-    process.env.NODE_ENV === 'development'
-      ? {
-          stack: error.stack,
-        }
-      : {};
   res.status(error.httpCode).json({
     name: error.name,
     httpCode: error.httpCode,
     message: error.message,
     isOperational: error.isOperational,
-    ...isDevEnvironment,
+    ...(isDevEnvironment && { stack: err.stack }),
   });
 };
 
