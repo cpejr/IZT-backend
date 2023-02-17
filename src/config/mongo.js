@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import logger from './logger.js';
 
+mongoose.Promise = global.Promise;
+
 export default function mongoConfig() {
   return new Promise((resolve, reject) => {
     const mongoUrl =
@@ -15,8 +17,6 @@ export default function mongoConfig() {
 
     mongoose.connection.once('open', () => {
       logger.info('✅ Established connection with mongodb');
-
-      mongoose.Promise = global.Promise;
       resolve();
     });
 
