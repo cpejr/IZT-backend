@@ -6,13 +6,15 @@ export const getUserValidator = validate(
     query: z.object({
       _id: z.string().optional(),
       name: z.string().optional(),
+      isAdmin: z.boolean().optional(),
+      isActive: z.boolean().optional(),
       company: z.string().optional(),
       email: z.string().optional(),
       telephone: z.string().optional(),
       country: z.string().optional(),
       state: z.string().optional(),
       city: z.string().optional(),
-      ZIPcode: z.string().optional(),
+      zipCode: z.string().optional(),
       address: z.string().optional(),
     }),
   })
@@ -26,6 +28,10 @@ export const createUserValidator = validate(
         .max(40, { message: 'Name must be a maximum of 40 characters' })
         .min(10, { message: 'Name must be atleast 10 characters' })
         .optional(),
+
+      isAdmin: z.boolean().default(false),
+
+      isActive: z.boolean().default(false),
 
       company: z
         .string({ required_error: 'Company name is required' })
@@ -60,10 +66,10 @@ export const createUserValidator = validate(
         .min(4, { message: 'City must be atleast 4 characters' })
         .optional(),
 
-      ZIPcode: z
-        .string({ required_error: 'ZIPcode is required' })
-        .max(8, { message: 'ZIPcode must be a maximum of 8 characters' })
-        .min(5, { message: 'ZIPcode must be atleast 5 characters' })
+      zipCode: z
+        .string({ required_error: 'Zip code is required' })
+        .max(8, { message: 'Zid code must be a maximum of 8 characters' })
+        .min(5, { message: 'Zip code must be atleast 5 characters' })
         .regex(/^[0-9]{5}(?:-[0-9]{4})?$/, 'Zip code bad formatted')
         .optional(),
 
@@ -84,6 +90,10 @@ export const updateUserValidator = validate(
         .max(40, { message: 'Name must be a maximum of 40 characters' })
         .min(10, { message: 'Name must be atleast 10 characters' })
         .optional(),
+
+      isAdmin: z.boolean().optional(),
+
+      isActive: z.boolean().optional(),
 
       company: z.string().optional(),
 
@@ -113,10 +123,10 @@ export const updateUserValidator = validate(
         .min(4, { message: 'City must be atleast 4 characters' })
         .optional(),
 
-      ZIPcode: z
+      zipCode: z
         .string()
-        .max(8, { message: 'ZIPcode must be a maximum of 8 characters' })
-        .min(5, { message: 'ZIPcode must be atleast 5 characters' })
+        .max(8, { message: 'Zip code must be a maximum of 8 characters' })
+        .min(5, { message: 'Zip code must be atleast 5 characters' })
         .regex(/^[0-9]{5}(?:-[0-9]{4})?$/, 'Zip code bad formatted')
         .optional(),
 
