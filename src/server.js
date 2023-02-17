@@ -7,6 +7,11 @@ import errorHandler from './middleware/errorHandler.js';
 import corsOptions from './config/corsOptions.js';
 import routes from './routes/index.js';
 
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception', err);
+  process.exit(1);
+});
+
 const isDevEnvironment = process.env.NODE_ENV === 'development';
 
 // Inicializando instância do servidor express
@@ -25,5 +30,10 @@ app.use('/api', routes);
 
 // Needs to be after the routes
 app.use(errorHandler);
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled rejection', err);
+  process.exit(1);
+});
 
 export default app;
