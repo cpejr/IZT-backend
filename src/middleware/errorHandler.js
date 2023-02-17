@@ -6,7 +6,7 @@ import {
   JwtExpiredError,
   ConflictError,
   InternalServerError,
-} from '../errors/BaseErrors';
+} from '../errors/BaseErrors.js';
 
 const errorHandler = (err, req, res) => {
   let error;
