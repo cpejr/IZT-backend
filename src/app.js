@@ -6,12 +6,6 @@ import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler.js';
 import corsOptions from './config/corsOptions.js';
 import routes from './routes/index.js';
-import logger from './config/logger.js';
-
-process.on('uncaughtException', (err) => {
-  logger.error(err, 'Uncaught exception');
-  process.exit(1);
-});
 
 const isDevEnvironment = process.env.NODE_ENV === 'development';
 
@@ -31,10 +25,5 @@ app.use('/api', routes);
 
 // Needs to be after the routes
 app.use(errorHandler);
-
-process.on('unhandledRejection', (err) => {
-  logger.error(err, 'Unhandled rejection');
-  process.exit(1);
-});
 
 export default app;
