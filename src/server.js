@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler.js';
 import corsOptions from './config/corsOptions.js';
 import routes from './routes/index.js';
+import { ERROR_CODES } from './errors/constants.js';
 
 const isDevEnvironment = process.env.NODE_ENV === 'development';
 
@@ -22,7 +23,7 @@ if (isDevEnvironment) app.use(morgan('dev'));
 
 // Routes
 app.use('/api', routes);
-
+app.all('*', (req, res) => res.sendStatus(ERROR_CODES.NOT_FOUND));
 // Needs to be after the routes
 app.use(errorHandler);
 

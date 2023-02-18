@@ -4,21 +4,17 @@ const userProgressSchema = new mongoose.Schema(
   {
     video: {
       type: mongoose.Types.ObjectId,
-      require: true,
+      required: true,
     },
     user: {
       type: mongoose.Types.ObjectId,
-<<<<<<< HEAD
-      ref: 'User'
-=======
       ref: 'User',
->>>>>>> ModelsAndControllers
       required: true,
       unique: true,
     },
     progress: {
       type: Number,
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }

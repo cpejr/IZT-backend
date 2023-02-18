@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 
 const courseSchema = new mongoose.Schema(
   {
@@ -20,9 +21,5 @@ const courseSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-<<<<<<< HEAD
-
-=======
->>>>>>> ModelsAndControllers
 const courseModel = mongoose.model('Course', courseSchema);
 export default courseModel;

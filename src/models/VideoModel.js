@@ -5,39 +5,32 @@ const videoSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-<<<<<<< HEAD
-      unique: true, //Precisa mesmo desse unique?
-    },
-    theme: {
-      type: String,
-      requiredd: true,
-=======
+      unique: true, // Precisa mesmo desse unique?
     },
     theme: {
       type: String,
       required: true,
->>>>>>> ModelsAndControllers
     },
     course: {
       type: mongoose.Types.ObjectId,
       ref: 'Course',
-      require: true,
+      required: true,
     },
     description: {
       type: String,
-      require: true,
+      required: true,
     },
     duration: {
       type: Number,
-      require: true,
+      required: true,
     },
     file: {
       type: mongoose.Types.ObjectId,
-      require: true,
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-const videoModel = mongoose.model('Video', videoSchema);
-export default videoModel;
+const VideoModel = mongoose.model('Video', videoSchema);
+export default VideoModel;
