@@ -8,7 +8,7 @@ export class AppError extends Error {
     this.httpCode = httpCode;
     this.isOperational = isOperational;
 
-    Error.captureStackTrace(this);
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 
@@ -49,6 +49,12 @@ export class JwtExpiredError extends AppError {
 export class ForbiddenError extends AppError {
   constructor(message) {
     super(ERROR_NAMES.FORBIDDEN, ERROR_CODES.FORBIDDEN, message, true);
+  }
+}
+
+export class NotFoundError extends AppError {
+  constructor(message) {
+    super(ERROR_NAMES.NOT_FOUND, ERROR_CODES.NOT_FOUND, message, true);
   }
 }
 

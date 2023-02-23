@@ -6,8 +6,8 @@ import cookieParser from 'cookie-parser';
 import errorHandler from './middleware/errorHandler.js';
 import corsOptions from './config/cors.js';
 import routes from './routes/index.js';
-
-const isDevEnvironment = process.env.NODE_ENV === 'development';
+import isDevEnvironment from './utils/isDevEnvironment.js';
+import { NotFoundError } from './errors/BaseErrors.js';
 
 // Inicializando instância do servidor express
 const app = express();
@@ -22,6 +22,9 @@ if (isDevEnvironment) app.use(morgan('dev'));
 
 // Routes
 app.use('/api', routes);
+app.all('*', (req, res, next) => {
+  next(new NotFoundError('Route not found'));
+});
 
 // Needs to be after the routes
 app.use(errorHandler);

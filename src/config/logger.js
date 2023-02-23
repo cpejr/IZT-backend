@@ -5,8 +5,13 @@ function getLogger() {
   if (isDevEnvironment)
     return pino({
       base: { pid: false },
-      timestamp: () => `,"time":"${new Date().toISOString()}"`,
-      transport: { target: 'pino-pretty' },
+      level: process.env.PINO_LOG_LEVEL || 'info',
+      transport: {
+        target: 'pino-pretty',
+        options: {
+          translateTime: "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'",
+        },
+      },
     });
 
   return console;

@@ -10,7 +10,8 @@ import {
 } from '../errors/BaseErrors.js';
 import isDevEnvironment from '../utils/isDevEnvironment.js';
 
-const errorHandler = (err, req, res) => {
+// eslint-disable-next-line no-unused-vars
+const errorHandler = (err, req, res, next) => {
   let error;
 
   if (err instanceof AppError) {
@@ -34,7 +35,7 @@ const errorHandler = (err, req, res) => {
   }
 
   logger.error(
-    err,
+    error,
     'Error message from the centralized error-handling component'
   );
 
@@ -43,7 +44,7 @@ const errorHandler = (err, req, res) => {
     httpCode: error.httpCode,
     message: error.message,
     isOperational: error.isOperational,
-    ...(isDevEnvironment && { stack: err.stack }),
+    ...(isDevEnvironment && { stack: error.stack }),
   });
 };
 
