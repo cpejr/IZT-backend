@@ -1,4 +1,4 @@
-import VideoModel from '../models/VideoModel.js';
+/* import VideoModel from '../models/VideoModel.js';
 
 export async function createVideo(req, res, next) {
   try {
@@ -55,4 +55,4 @@ export async function getAllVideos(req, res, next) {
   } catch (error) {
     next(error);
   }
-}
+} */
