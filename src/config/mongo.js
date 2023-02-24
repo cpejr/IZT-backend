@@ -9,7 +9,8 @@ export default function mongoConfig() {
       'mongodb+srv://' +
       `${encodeURI(process.env.MONGO_USER)}:` +
       `${encodeURI(process.env.MONGO_PASS)}@` +
-      `${encodeURI(process.env.MONGO_SERVER)}/?` +
+      `${encodeURI(process.env.MONGO_SERVER)}/` +
+      `${encodeURI(process.env.MONGO_DATABASE)}?` +
       `${encodeURI(process.env.MONGO_OPTIONS)}`;
 
     mongoose.set('strictQuery', true);
