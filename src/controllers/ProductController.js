@@ -1,13 +1,13 @@
-import asyncHandler from '../utils/asyncHandler';
-import Product from '../models/ProductModel.js';
+import asyncHandler from '../utils/asyncHandler.js';
+import ProductModel from '../models/ProductModel.js';
 
-export const getProducts = asyncHandler(async (req, res) => {
-  const products = await Product.find();
+export const get = asyncHandler(async (req, res) => {
+  const products = await ProductModel.find();
   res.status(200).json({ success: true, data: products });
 });
 
-export const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+export const getById = asyncHandler(async (req, res) => {
+  const product = await ProductModel.findById(req.params.id);
   if (!product) {
     res.status(404);
     throw new Error('Product not found');
@@ -15,26 +15,27 @@ export const getProductById = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data: product });
 });
 
-export const createProduct = asyncHandler(async (req, res) => {
-  const product = await Product.create(req.body);
-  res.status(201).json({ success: true, data: product });
+export const create = asyncHandler(async (req, res) => {
+  res.status(201).json({ success: true });
+  // const product = await ProductModel.create(req.body);
+  // res.status(201).json({ success: true, data: product });
 });
 
-export const updateProduct = asyncHandler(async (req, res) => {
-  let product = await Product.findById(req.params.id);
+export const update = asyncHandler(async (req, res) => {
+  let product = await ProductModel.findById(req.params.id);
   if (!product) {
     res.status(404);
     throw new Error('Product not found');
   }
-  product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+  product = await ProductModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
   res.status(200).json({ success: true, data: product });
 });
 
-export const deleteProduct = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id);
+export const destroy = asyncHandler(async (req, res) => {
+  const product = await ProductModel.findById(req.params.id);
   if (!product) {
     res.status(404);
     throw new Error('Product not found');

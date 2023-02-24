@@ -14,6 +14,7 @@ const productSchema = new mongoose.Schema(
     },
     purchases: {
       type: Number,
+      default: 0,
       required: true,
     },
     picture: {

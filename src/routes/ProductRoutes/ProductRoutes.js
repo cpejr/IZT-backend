@@ -4,10 +4,12 @@ import * as ProductController from '../../controllers/ProductController.js';
 const ProductRoutes = Router();
 
 // Exclusively for admin
-ProductRoutes.route('/');
-ProductRoutes.get('/', ProductController.index);
-ProductRoutes.post('/', ProductController.create);
-ProductRoutes.put('/:id', ProductController.update);
-ProductRoutes.delete('/:id', ProductController.exclude);
+ProductRoutes.route('/')
+  .get(ProductController.get)
+  .post(ProductController.create);
+
+ProductRoutes.route('/:id')
+  .put(ProductController.update)
+  .delete(ProductController.destroy);
 
 export default ProductRoutes;
