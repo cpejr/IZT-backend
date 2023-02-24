@@ -25,7 +25,6 @@
     "@commitlint/cli": "^17.4.2",
     "@commitlint/config-conventional": "^17.4.2",
     "commitlint": "^17.4.2",
-    "dotenv": "^16.0.3",
     "eslint": "8.2.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "^8.6.0",
@@ -37,16 +36,19 @@
     "husky": "^8.0.0",
     "lint-staged": "^13.1.0",
     "nodemon": "^2.0.20",
+    "pino-pretty": "^9.2.0",
     "prettier": "^2.8.2"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "helmet": "^6.0.1",
     "mongoose": "^6.9.1",
     "morgan": "^1.10.0",
     "path": "^0.12.7",
+    "pino": "^8.10.0",
     "zod": "^3.20.2"
   }
 }
