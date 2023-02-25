@@ -25,7 +25,10 @@ const errorHandler = (err, req, res, next) => {
     const message = fields.map((field) => err.errors[field].message).join('; ');
     error = new BadRequest(`DB validation error(s): ${message}`);
   } else if (err?.code === 11000) {
-    error = new ConflictError('Email or CPF already exists');
+    const [key, value] = Object.entries(err.keyValue)[0];
+    error = new ConflictError(
+      `Value '${value}' of property '${key}' already exists`
+    );
   } else if (err?.name === 'JsonWebTokenError') {
     error = new JwtInvalidError();
   } else if (err?.name === 'TokenExpiredError') {

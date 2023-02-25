@@ -1,13 +1,13 @@
-import asyncHandler from '../utils/asyncHandler';
-import User from '../models/UserModel.js';
+import asyncHandler from '../utils/asyncHandler.js';
+import UserModel from '../models/UserModel.js';
 
-export const getUsers = asyncHandler(async (req, res) => {
-  const users = await User.find({});
+export const get = asyncHandler(async (req, res) => {
+  const users = await UserModel.find({});
   res.json(users);
 });
 
-export const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select('-password');
+export const getById = asyncHandler(async (req, res) => {
+  const user = await UserModel.findById(req.params.id).select('-password');
   if (user) {
     res.json(user);
   } else {
@@ -16,19 +16,13 @@ export const getUserById = asyncHandler(async (req, res) => {
   }
 });
 
-export const deleteUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
-  if (user) {
-    await user.remove();
-    res.json({ message: 'User removed' });
-  } else {
-    res.status(404);
-    throw new Error('User not found');
-  }
+export const create = asyncHandler(async (req, res) => {
+  const user = await UserModel.create(req.body);
+  res.status(201).json({ success: true, data: user });
 });
 
-export const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
+export const update = asyncHandler(async (req, res) => {
+  const user = await UserModel.findById(req.params.id);
 
   if (user) {
     user.name = req.body.name || user.name;
@@ -43,6 +37,17 @@ export const updateUser = asyncHandler(async (req, res) => {
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
     });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+export const destroy = asyncHandler(async (req, res) => {
+  const user = await UserModel.findById(req.params.id);
+  if (user) {
+    await user.remove();
+    res.json({ message: 'User removed' });
   } else {
     res.status(404);
     throw new Error('User not found');

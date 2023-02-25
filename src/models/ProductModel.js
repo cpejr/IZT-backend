@@ -15,6 +15,7 @@ const productSchema = new mongoose.Schema(
     purchases: {
       type: Number,
       default: 0,
+      min: [0, 'Purchases cannot be less than 0'],
       required: true,
     },
     picture: {
@@ -29,6 +30,7 @@ const productSchema = new mongoose.Schema(
     documents: {
       type: [mongoose.Types.ObjectId],
       ref: 'File',
+      default: [],
       required: true,
     },
   },

@@ -1,13 +1,13 @@
 import asyncHandler from '../utils/asyncHandler';
-import File from '../models/FileModel.js';
+import FileModel from '../models/FileModel.js';
 
 export const getFiles = asyncHandler(async (req, res) => {
-  const files = await File.find();
+  const files = await FileModel.find();
   res.status(200).json({ success: true, data: files });
 });
 
 export const getFileById = asyncHandler(async (req, res) => {
-  const file = await File.findById(req.params.id);
+  const file = await FileModel.findById(req.params.id);
   if (!file) {
     res.status(404);
     throw new Error('File not found');
@@ -16,17 +16,17 @@ export const getFileById = asyncHandler(async (req, res) => {
 });
 
 export const createFile = asyncHandler(async (req, res) => {
-  const file = await File.create(req.body);
+  const file = await FileModel.create(req.body);
   res.status(201).json({ success: true, data: file });
 });
 
 export const updateFile = asyncHandler(async (req, res) => {
-  let file = await File.findById(req.params.id);
+  let file = await FileModel.findById(req.params.id);
   if (!file) {
     res.status(404);
     throw new Error('File not found');
   }
-  file = await File.findByIdAndUpdate(req.params.id, req.body, {
+  file = await FileModel.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
@@ -34,7 +34,7 @@ export const updateFile = asyncHandler(async (req, res) => {
 });
 
 export const deleteFile = asyncHandler(async (req, res) => {
-  const file = await File.findById(req.params.id);
+  const file = await FileModel.findById(req.params.id);
   if (!file) {
     res.status(404);
     throw new Error('File not found');

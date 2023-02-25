@@ -11,12 +11,7 @@ const userTokenSchema = new mongoose.Schema(
     token: {
       type: String,
       required: true,
-      unique: true, // é unique mesmo?
-    },
-    rememberMe: {
-      type: Boolean,
-      required: true,
-      unique: true, // é unique mesmo?
+      unique: true,
     },
     expiresAt: {
       type: Date,
@@ -26,5 +21,7 @@ const userTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const userTokenModel = mongoose.model('User Token', userTokenSchema);
+userTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+
+const userTokenModel = mongoose.model('UserToken', userTokenSchema);
 export default userTokenModel;

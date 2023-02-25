@@ -10,7 +10,6 @@ const userProgressSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: 'User',
       required: true,
-      unique: true,
     },
     progress: {
       type: Number,
@@ -19,6 +18,8 @@ const userProgressSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userProgressSchema.index({ user: 1, video: 1 }, { unique: true }); // Only one progress for the same video and user
 
 const userProgressModel = mongoose.model('User Progress', userProgressSchema);
 export default userProgressModel;

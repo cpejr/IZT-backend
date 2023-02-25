@@ -16,9 +16,8 @@ export const getById = asyncHandler(async (req, res) => {
 });
 
 export const create = asyncHandler(async (req, res) => {
-  res.status(201).json({ success: true });
-  // const product = await ProductModel.create(req.body);
-  // res.status(201).json({ success: true, data: product });
+  const product = await ProductModel.create(req.body);
+  res.status(201).json({ success: true, data: product });
 });
 
 export const update = asyncHandler(async (req, res) => {

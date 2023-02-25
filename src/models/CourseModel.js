@@ -10,6 +10,7 @@ const courseSchema = new mongoose.Schema(
     duration: {
       type: Number,
       required: true,
+      min: [0, 'Course duration cannot be less than 0 millisecond'],
     },
     description: {
       type: String,
@@ -18,6 +19,7 @@ const courseSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
+      min: [0, 'Price cannot be lesser than 0'],
     },
   },
   { timestamps: true }
