@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -65,10 +65,10 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.index(
+UserSchema.index(
   { createdAt: 1 },
   { expireAfterSeconds: 60 * 15, partialFilterExpression: { isActive: false } }
 ); // After 15 minutes, if the user is not active, the document will be automatically deleted
 
-const UserModel = mongoose.model('User', userSchema);
+const UserModel = mongoose.model('User', UserSchema);
 export default UserModel;

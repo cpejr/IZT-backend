@@ -15,9 +15,9 @@ export const create = validate(
   z.object({
     body: z.object({
       name: z
-        .string()
-        .max(40, { message: 'Name must be a maximum of 40 characters' })
-        .min(3, { message: 'Name must be atleast 10 characters' }),
+        .string({ required_error: 'Category name is required' })
+        .min(3, 'Category name must be atleast 3 characters')
+        .max(40, 'Category name must be a maximum of 40 characters'),
       description: z.string().optional(),
     }),
   })
@@ -28,8 +28,8 @@ export const update = validate(
     body: z.object({
       name: z
         .string()
-        .max(40, { message: 'Name must be a maximum of 40 characters' })
-        .min(3, { message: 'Name must be atleast 3 characters' })
+        .min(3, 'Category name must be atleast 3 characters')
+        .max(40, 'Category name must be a maximum of 40 characters')
         .optional(),
       description: z.string().optional(),
     }),

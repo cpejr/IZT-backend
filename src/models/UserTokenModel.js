@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const userTokenSchema = new mongoose.Schema(
+const UserTokenSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Types.ObjectId,
@@ -21,7 +21,7 @@ const userTokenSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+UserTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-const UserTokenModel = mongoose.model('UserToken', userTokenSchema);
+const UserTokenModel = mongoose.model('UserToken', UserTokenSchema);
 export default UserTokenModel;

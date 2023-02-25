@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const courseSchema = new mongoose.Schema(
+const CourseSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -22,7 +22,10 @@ const courseSchema = new mongoose.Schema(
       min: [0, 'Price cannot be lesser than 0'],
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    optimisticConcurrency: true, // For properties 'duration' and 'price'. More details on https://thecodebarbarian.com/whats-new-in-mongoose-5-10-optimistic-concurrency.html
+  }
 );
-const CourseModel = mongoose.model('Course', courseSchema);
+const CourseModel = mongoose.model('Course', CourseSchema);
 export default CourseModel;

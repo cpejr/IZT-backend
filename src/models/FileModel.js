@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const fileSchema = new mongoose.Schema(
+const FileSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -9,7 +9,7 @@ const fileSchema = new mongoose.Schema(
     size: {
       type: Number,
       required: true,
-      min: [0, 'File size cannot be less than 0'],
+      min: [0, 'File size cannot be less than 0 bytes'],
     },
     key: {
       type: String,
@@ -25,8 +25,8 @@ const fileSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
-const FileModel = mongoose.model('File', fileSchema);
+const FileModel = mongoose.model('File', FileSchema);
 export default FileModel;

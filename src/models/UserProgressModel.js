@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const userProgressSchema = new mongoose.Schema(
+const UserProgressSchema = new mongoose.Schema(
   {
     video: {
       type: mongoose.Types.ObjectId,
@@ -19,7 +19,7 @@ const userProgressSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userProgressSchema.index({ user: 1, video: 1 }, { unique: true }); // Only one progress for the same video and user
+UserProgressSchema.index({ user: 1, video: 1 }, { unique: true }); // Only one progress for the same video and user
 
-const UserProgressModel = mongoose.model('User Progress', userProgressSchema);
+const UserProgressModel = mongoose.model('User Progress', UserProgressSchema);
 export default UserProgressModel;

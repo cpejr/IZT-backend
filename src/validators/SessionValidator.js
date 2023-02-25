@@ -9,10 +9,8 @@ const loginValidator = validate(
         .email('Must be a valid email'),
       password: z
         .string({ required_error: 'Password is required' })
-        .max(16, {
-          message: 'Password must be a maximum of 16 characters',
-        })
-        .min(6, { message: 'Password must be atleast 6 characters' }),
+        .min(6, 'Password must be atleast 6 characters')
+        .max(16, 'Password must be a maximum of 16 characters'),
     }),
   })
 );

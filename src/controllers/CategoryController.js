@@ -6,36 +6,36 @@ import { NotFoundError } from '../errors/BaseErrors.js';
 
 export const get = asyncHandler(async (req, res) => {
   const inputFilters = CategoryValidator.get(req);
-  const categories = await CategoryModel.find(inputFilters).exec();
+  const categories = await CategoryModel.find(inputFilters)
+    .populate('products')
+    .exec();
   res.status(SUCCESS_CODES.OK).json(categories);
 });
 
 export const create = asyncHandler(async (req, res) => {
   const inputData = CategoryValidator.create(req);
-  const newCategory = await CategoryModel.create(inputData).exec();
+  const newCategory = await CategoryModel.create(inputData);
   res.status(SUCCESS_CODES.CREATED).json(newCategory);
 });
 
 export const update = asyncHandler(async (req, res) => {
   const { _id, ...inputData } = CategoryValidator.update(req);
 
-  const existingCategory = await CategoryModel.findById(_id).exec();
-  if (!existingCategory) throw new NotFoundError('Category not found');
+  const foundCategory = await CategoryModel.findById(_id).exec();
+  if (!foundCategory) throw new NotFoundError('Category not found');
 
-  const updatedCategory = await CategoryModel.findByIdAndUpdate(
-    _id,
-    inputData,
-    { new: true, runValidators: true }
-  ).exec();
+  const updatedCategory = foundCategory.set(inputData);
+  await updatedCategory.save();
+
   res.status(SUCCESS_CODES.OK).json(updatedCategory);
 });
 
 export const destroy = asyncHandler(async (req, res) => {
   const { _id } = CategoryValidator.destroy(req);
 
-  const existingCategory = await CategoryModel.findById(_id).exec();
-  if (!existingCategory) throw new NotFoundError('Category not found');
+  const foundCategory = await CategoryModel.findById(_id).exec();
+  if (!foundCategory) throw new NotFoundError('Category not found');
 
-  await existingCategory.remove();
+  await foundCategory.remove();
   res.sendStatus(SUCCESS_CODES.NO_CONTENT);
 });

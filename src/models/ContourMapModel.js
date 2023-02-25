@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const contourMapSchema = new mongoose.Schema(
+const ContourMapSchema = new mongoose.Schema(
   {
     tangentAngleData: {
       type: String,
@@ -20,10 +20,10 @@ const contourMapSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
-contourMapSchema.index({ name: 1, user: 1 }, { unique: true }); // It is not possible to exist contour maps with the same name per user
+ContourMapSchema.index({ name: 1, user: 1 }, { unique: true }); // It is not possible to exist contour maps with the same name per user
 
-const ContourMapModel = mongoose.model('ContourMap', contourMapSchema);
+const ContourMapModel = mongoose.model('ContourMap', ContourMapSchema);
 export default ContourMapModel;

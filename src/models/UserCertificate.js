@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const userCertificateSchema = new mongoose.Schema(
+const UserCertificateSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Types.ObjectId,
@@ -19,6 +19,6 @@ const userCertificateSchema = new mongoose.Schema(
 
 const UserCertificateModel = mongoose.model(
   'User Certificate',
-  userCertificateSchema
+  UserCertificateSchema
 );
 export default UserCertificateModel;

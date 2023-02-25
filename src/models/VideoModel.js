@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const videoSchema = new mongoose.Schema(
+const VideoSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -32,7 +32,7 @@ const videoSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-videoSchema.index({ name: 1, course: 1 }, { unique: true }); // It is not possible to exist more than 1 video with the same name inside a course
+VideoSchema.index({ name: 1, course: 1 }, { unique: true }); // It is not possible to exist more than 1 video with the same name inside a course
 
-const VideoModel = mongoose.model('Video', videoSchema);
+const VideoModel = mongoose.model('Video', VideoSchema);
 export default VideoModel;
