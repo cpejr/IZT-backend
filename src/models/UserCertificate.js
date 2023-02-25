@@ -17,8 +17,8 @@ const userCertificateSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const userCertificateModel = mongoose.model(
+const UserCertificateModel = mongoose.model(
   'User Certificate',
   userCertificateSchema
 );
-export default userCertificateModel;
+export default UserCertificateModel;

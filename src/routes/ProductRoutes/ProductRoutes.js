@@ -8,7 +8,7 @@ ProductRoutes.route('/')
   .get(ProductController.get)
   .post(ProductController.create);
 
-ProductRoutes.route('/:id')
+ProductRoutes.route('/:_id')
   .put(ProductController.update)
   .delete(ProductController.destroy);
 

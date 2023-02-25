@@ -26,7 +26,7 @@ export const createUserValidator = validate(
       name: z
         .string({ required_error: 'Name is required' })
         .max(40, { message: 'Name must be a maximum of 40 characters' })
-        .min(10, { message: 'Name must be atleast 10 characters' })
+        .min(3, { message: 'Name must be atleast 3 characters' })
         .optional(),
 
       isAdmin: z.boolean().default(false),
@@ -88,7 +88,7 @@ export const updateUserValidator = validate(
       name: z
         .string()
         .max(40, { message: 'Name must be a maximum of 40 characters' })
-        .min(10, { message: 'Name must be atleast 10 characters' })
+        .min(3, { message: 'Name must be atleast 3 characters' })
         .optional(),
 
       isAdmin: z.boolean().optional(),
@@ -137,7 +137,7 @@ export const updateUserValidator = validate(
         .optional(),
     }),
     params: z.object({
-      id: z.string({ required_error: 'User ID is required' }),
+      _id: z.string({ required_error: 'User ID is required' }),
     }),
   })
 );
@@ -145,7 +145,7 @@ export const updateUserValidator = validate(
 export const deleteUserValidator = validate(
   z.object({
     params: z.object({
-      id: z.string({ required_error: 'Product ID is required' }),
+      _id: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );

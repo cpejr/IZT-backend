@@ -1,5 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { ERROR_CODES, ERROR_NAMES } from './constants.js';
+import { ERROR_CODES, ERROR_NAMES } from '../utils/constants.js';
 
 export class AppError extends Error {
   constructor(name, httpCode, message, isOperational) {

@@ -70,5 +70,5 @@ userSchema.index(
   { expireAfterSeconds: 60 * 15, partialFilterExpression: { isActive: false } }
 ); // After 15 minutes, if the user is not active, the document will be automatically deleted
 
-const userModel = mongoose.model('User', userSchema);
-export default userModel;
+const UserModel = mongoose.model('User', userSchema);
+export default UserModel;

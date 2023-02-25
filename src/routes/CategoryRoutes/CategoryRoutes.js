@@ -8,7 +8,7 @@ CategoryRoutes.route('/')
   .get(CategoryController.get)
   .post(CategoryController.create);
 
-CategoryRoutes.route('/:id')
+CategoryRoutes.route('/:_id')
   .put(CategoryController.update)
   .delete(CategoryController.destroy);
 

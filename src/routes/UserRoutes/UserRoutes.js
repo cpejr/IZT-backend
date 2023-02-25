@@ -5,7 +5,7 @@ const UserRoutes = Router();
 
 UserRoutes.route('/').get(UserController.get).post(UserController.create);
 
-UserRoutes.route('/:id')
+UserRoutes.route('/:_id')
   .put(UserController.update)
   .delete(UserController.destroy);
 

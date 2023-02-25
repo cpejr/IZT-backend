@@ -74,7 +74,7 @@ export const updateProductValidator = validate(
       documents: z.array(documentSchema).optional(),
     }),
     params: z.object({
-      id: z.string({ required_error: 'Product ID is required' }),
+      _id: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );
@@ -82,7 +82,7 @@ export const updateProductValidator = validate(
 export const deleteProductValidator = validate(
   z.object({
     params: z.object({
-      id: z.string({ required_error: 'Product ID is required' }),
+      _id: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );
@@ -137,7 +137,7 @@ export const formsBudgetValidator = validate(
     }),
 
     params: z.object({
-      id: z.string({ required_error: 'Product ID is required' }),
+      _id: z.string({ required_error: 'Product ID is required' }),
     }),
   })
 );

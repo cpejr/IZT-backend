@@ -25,5 +25,5 @@ const contourMapSchema = new mongoose.Schema(
 
 contourMapSchema.index({ name: 1, user: 1 }, { unique: true }); // It is not possible to exist contour maps with the same name per user
 
-const contourMapModel = mongoose.model('ContourMap', contourMapSchema);
-export default contourMapModel;
+const ContourMapModel = mongoose.model('ContourMap', contourMapSchema);
+export default ContourMapModel;

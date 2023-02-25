@@ -1,44 +1,41 @@
 import asyncHandler from '../utils/asyncHandler.js';
 import CategoryModel from '../models/CategoryModel.js';
+import * as CategoryValidator from '../validators/CategoryValidator.js';
+import { SUCCESS_CODES } from '../utils/constants.js';
+import { NotFoundError } from '../errors/BaseErrors.js';
 
 export const get = asyncHandler(async (req, res) => {
-  const categorys = await CategoryModel.find();
-  res.status(200).json({ success: true, data: categorys });
-});
-
-export const getById = asyncHandler(async (req, res) => {
-  const category = await CategoryModel.findById(req.params.id);
-  if (!category) {
-    res.status(404);
-    throw new Error('Category not found');
-  }
-  res.status(200).json({ success: true, data: category });
+  const inputFilters = CategoryValidator.get(req);
+  const categories = await CategoryModel.find(inputFilters).exec();
+  res.status(SUCCESS_CODES.OK).json(categories);
 });
 
 export const create = asyncHandler(async (req, res) => {
-  const category = await CategoryModel.create(req.body);
-  res.status(201).json({ success: true, data: category });
+  const inputData = CategoryValidator.create(req);
+  const newCategory = await CategoryModel.create(inputData).exec();
+  res.status(SUCCESS_CODES.CREATED).json(newCategory);
 });
 
 export const update = asyncHandler(async (req, res) => {
-  let category = await CategoryModel.findById(req.params.id);
-  if (!category) {
-    res.status(404);
-    throw new Error('Category not found');
-  }
-  category = await CategoryModel.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({ success: true, data: category });
+  const { _id, ...inputData } = CategoryValidator.update(req);
+
+  const existingCategory = await CategoryModel.findById(_id).exec();
+  if (!existingCategory) throw new NotFoundError('Category not found');
+
+  const updatedCategory = await CategoryModel.findByIdAndUpdate(
+    _id,
+    inputData,
+    { new: true, runValidators: true }
+  ).exec();
+  res.status(SUCCESS_CODES.OK).json(updatedCategory);
 });
 
 export const destroy = asyncHandler(async (req, res) => {
-  const category = await CategoryModel.findById(req.params.id);
-  if (!category) {
-    res.status(404);
-    throw new Error('Category not found');
-  }
-  await category.remove();
-  res.status(200).json({ success: true, data: {} });
+  const { _id } = CategoryValidator.destroy(req);
+
+  const existingCategory = await CategoryModel.findById(_id).exec();
+  if (!existingCategory) throw new NotFoundError('Category not found');
+
+  await existingCategory.remove();
+  res.sendStatus(SUCCESS_CODES.NO_CONTENT);
 });

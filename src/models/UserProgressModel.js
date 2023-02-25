@@ -21,5 +21,5 @@ const userProgressSchema = new mongoose.Schema(
 
 userProgressSchema.index({ user: 1, video: 1 }, { unique: true }); // Only one progress for the same video and user
 
-const userProgressModel = mongoose.model('User Progress', userProgressSchema);
-export default userProgressModel;
+const UserProgressModel = mongoose.model('User Progress', userProgressSchema);
+export default UserProgressModel;
