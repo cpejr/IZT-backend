@@ -37,6 +37,8 @@ const errorHandler = (err, req, res, next) => {
     error = new InternalServerError(err?.message);
   }
 
+  error.stack = err.stack;
+
   logger.error(
     error,
     'Error message from the centralized error-handling component'

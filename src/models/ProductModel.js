@@ -12,6 +12,7 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
     description: {
       type: String,
@@ -45,20 +46,22 @@ const ProductSchema = new mongoose.Schema(
 );
 
 ProductSchema.pre('remove', async function (next) {
-  const filesIds = [...this.pictures, ...this.documents];
-  await FileModel.deleteMany({ _id: filesIds }).exec();
+  const populatedProduct = await this.populate(['pictures', 'documents']);
+
+  await FileModel.deleteManyWithStorage([
+    ...populatedProduct.pictures,
+    ...populatedProduct.documents,
+  ]);
   next();
 });
 
 ProductSchema.statics.createWithFiles = async function (inputData) {
   const { documents, pictures, ...data } = inputData;
-  const [picturesFiles, documentsFiles] = await Promise.all([
-    FileModel.insertMany(pictures),
-    FileModel.insertMany(documents),
-  ]);
 
-  const picturesIds = picturesFiles.map(({ _id }) => _id);
-  const documentsIds = documentsFiles.map(({ _id }) => _id);
+  const [picturesIds, documentsIds] = await Promise.all([
+    FileModel.putObjects(pictures),
+    FileModel.putObjects(documents),
+  ]);
 
   return this.create({
     pictures: picturesIds,

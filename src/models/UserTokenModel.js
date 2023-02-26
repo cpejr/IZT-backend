@@ -18,7 +18,7 @@ const UserTokenSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 UserTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });

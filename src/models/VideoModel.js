@@ -5,6 +5,7 @@ const VideoSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     theme: {
       type: String,
@@ -29,7 +30,10 @@ const VideoSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    optimisticConcurrency: true, // For properties 'duration'. More details on https://thecodebarbarian.com/whats-new-in-mongoose-5-10-optimistic-concurrency.html
+  }
 );
 
 VideoSchema.index({ name: 1, course: 1 }, { unique: true }); // It is not possible to exist more than 1 video with the same name inside a course

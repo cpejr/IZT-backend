@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
+import * as awsS3 from '../config/awsS3.js';
 
 const FileSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     size: {
       type: Number,
@@ -41,8 +43,31 @@ FileSchema.pre('insertMany', function (next, docs) {
   next();
 });
 
-FileSchema.pre('remove', function () {});
-FileSchema.pre('deleteMany', function () {});
+FileSchema.statics.putObject = async function (file) {
+  const uploadedFile = await awsS3.uploadOneFile(file);
+  const fileToCreate = { key: uploadedFile.key, ...file };
+  const insertedFile = await this.create(fileToCreate);
+
+  return insertedFile._id;
+};
+FileSchema.statics.putObjects = async function (files) {
+  const keys = (await awsS3.uploadFiles(files)).map(({ key }) => key);
+
+  const filesToInsert = files.map((file, idx) => ({ key: keys[idx], ...file }));
+  const insertedFiles = await this.insertMany(filesToInsert);
+
+  return insertedFiles.map(({ _id }) => _id);
+};
+
+FileSchema.statics.deleteManyWithStorage = async function (files) {
+  const deleteStorageRequests = files.map(({ key }) => awsS3.deleteFile(key));
+  const filesIds = files.map(({ _id }) => _id);
+
+  await Promise.all([
+    this.deleteMany({ _id: filesIds }).exec(),
+    deleteStorageRequests,
+  ]);
+};
 
 const FileModel = mongoose.model('File', FileSchema);
 export default FileModel;

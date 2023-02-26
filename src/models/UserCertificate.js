@@ -14,11 +14,11 @@ const UserCertificateSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 const UserCertificateModel = mongoose.model(
-  'User Certificate',
+  'UserCertificate',
   UserCertificateSchema
 );
 export default UserCertificateModel;

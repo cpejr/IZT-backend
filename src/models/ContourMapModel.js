@@ -13,6 +13,7 @@ const ContourMapSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
     user: {
       type: mongoose.Types.ObjectId,

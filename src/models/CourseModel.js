@@ -6,6 +6,7 @@ const CourseSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
+      trim: true,
     },
     duration: {
       type: Number,
@@ -19,7 +20,7 @@ const CourseSchema = new mongoose.Schema(
     price: {
       type: Number,
       required: true,
-      min: [0, 'Price cannot be lesser than 0'],
+      min: [0, 'Price cannot be less than 0 reais'],
     },
   },
   {
