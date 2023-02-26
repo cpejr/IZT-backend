@@ -38,7 +38,7 @@ const errorHandler = (err, req, res, next) => {
   }
 
   logger.error(
-    err,
+    error,
     'Error message from the centralized error-handling component'
   );
 

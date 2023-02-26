@@ -14,9 +14,8 @@ export const get = asyncHandler(async (req, res) => {
 });
 
 export const create = asyncHandler(async (req, res) => {
-  req.files = { pictures: [], documents: [] };
   const inputData = ProductValidator.create(req);
-  const newProduct = await ProductModel.create(inputData);
+  const newProduct = await ProductModel.createWithFiles(inputData);
   res.status(SUCCESS_CODES.CREATED).json(newProduct);
 });
 

@@ -12,6 +12,6 @@
   },
   "rules": {
     "import/extensions": 0,
-    "no-underscore-dangle": ["error", { "allowAfterThis": true }]
+    "no-underscore-dangle": 0
   }
 }

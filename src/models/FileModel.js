@@ -20,13 +20,27 @@ const FileSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    url: {
-      type: String,
-      required: true,
-    },
+    url: String,
   },
   { timestamps: true, versionKey: false }
 );
+
+FileSchema.pre('save', function (next) {
+  if (!this.url) {
+    this.url = `${process.env.URL}/api/files/${this.key}`;
+  }
+  next();
+});
+
+FileSchema.pre('insertMany', function (next, docs) {
+  docs.forEach((doc) => {
+    if (!doc.url) {
+      // eslint-disable-next-line no-param-reassign
+      doc.url = `${process.env.BACKEND_URL}/api/files/${doc.key}`;
+    }
+  });
+  next();
+});
 
 const FileModel = mongoose.model('File', FileSchema);
 export default FileModel;

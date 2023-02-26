@@ -17,7 +17,9 @@ const zodFileSchema = ({ fileName, allowedMimeTypes, sizeLimitInMB }) =>
       key: z.string({ required_error: `${fileName} key is required` }),
       mimetype: z.enum(allowedMimeTypes, {
         errorMap: () => ({
-          message: `Invalid ${fileName} mime type. Only allowed: ${allowedMimeTypes.toString()}`,
+          message: `Invalid ${fileName} mime type. Only allowed: ${allowedMimeTypes.join(
+            ', '
+          )}`,
         }),
       }),
       location: z.string().default(''),
