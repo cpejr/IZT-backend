@@ -31,7 +31,6 @@ FileSchema.pre('save', function (next) {
   }
   next();
 });
-
 FileSchema.pre('insertMany', function (next, docs) {
   docs.forEach((doc) => {
     if (!doc.url) {
@@ -41,6 +40,9 @@ FileSchema.pre('insertMany', function (next, docs) {
   });
   next();
 });
+
+FileSchema.pre('remove', function () {});
+FileSchema.pre('deleteMany', function () {});
 
 const FileModel = mongoose.model('File', FileSchema);
 export default FileModel;

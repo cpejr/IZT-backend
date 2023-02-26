@@ -45,8 +45,8 @@ const ProductSchema = new mongoose.Schema(
 );
 
 ProductSchema.pre('remove', async function (next) {
-  const filesIds = [...this.pictures, this.documents];
-  await FileModel.deleteMany(filesIds);
+  const filesIds = [...this.pictures, ...this.documents];
+  await FileModel.deleteMany({ _id: filesIds }).exec();
   next();
 });
 
