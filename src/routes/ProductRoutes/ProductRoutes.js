@@ -3,17 +3,17 @@ import uploader from '../../config/multer.js';
 import * as ProductController from '../../controllers/ProductController.js';
 
 const ProductRoutes = Router();
+const processFilesMiddeware = uploader.fields([
+  { name: 'pictures' },
+  { name: 'documents' },
+]);
 
-// Exclusively for admin
 ProductRoutes.route('/')
   .get(ProductController.get)
-  .post(
-    uploader.fields([{ name: 'pictures' }, { name: 'documents' }]),
-    ProductController.create
-  );
+  .post(processFilesMiddeware, ProductController.create);
 
 ProductRoutes.route('/:_id')
-  .put(ProductController.update)
+  .put(processFilesMiddeware, ProductController.update)
   .delete(ProductController.destroy);
 
 export default ProductRoutes;

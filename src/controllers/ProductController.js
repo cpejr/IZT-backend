@@ -7,10 +7,9 @@ import { NotFoundError } from '../errors/BaseErrors.js';
 export const get = asyncHandler(async (req, res) => {
   const inputFilters = ProductValidator.get(req);
   const products = await ProductModel.find(inputFilters)
-    .populate('category')
-    .populate('pictures')
-    .populate('documents')
+    .populate(['category', 'pictures', 'documents'])
     .exec();
+
   res.status(SUCCESS_CODES.OK).json(products);
 });
 
@@ -21,16 +20,16 @@ export const create = asyncHandler(async (req, res) => {
 });
 
 export const update = asyncHandler(async (req, res) => {
-  let product = await ProductModel.findById(req.params.id);
-  if (!product) {
-    res.status(404);
-    throw new Error('Product not found');
-  }
-  product = await ProductModel.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({ success: true, data: product });
+  const { _id, ...inputData } = ProductValidator.update(req);
+
+  const foundProduct = await ProductModel.findById(_id).exec();
+  if (!foundProduct) throw new NotFoundError('Product not found');
+
+  const newInputData = await foundProduct.updateFiles(inputData);
+  const updatedProduct = foundProduct.set(newInputData);
+
+  await updatedProduct.save();
+  res.status(SUCCESS_CODES.OK).json(updatedProduct);
 });
 
 export const destroy = asyncHandler(async (req, res) => {

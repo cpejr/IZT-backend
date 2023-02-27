@@ -4,14 +4,14 @@ import { ERROR_CODES, ERROR_NAMES } from '../utils/constants.js';
 export class AppError extends Error {
   constructor(name, httpCode, message, isOperational) {
     super(message);
+
+    Object.setPrototypeOf(this, new.target.prototype);
+
     this.name = name;
     this.httpCode = httpCode;
     this.isOperational = isOperational;
-
-    Error.captureStackTrace(this, this.constructor);
   }
 }
-
 export class ValidationError extends AppError {
   constructor(message) {
     super(ERROR_NAMES.VALIDATION_ERROR, ERROR_CODES.FORBIDDEN, message, true);

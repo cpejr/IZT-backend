@@ -3,7 +3,6 @@ import * as CategoryController from '../../controllers/CategoryController.js';
 
 const CategoryRoutes = Router();
 
-// Exclusively for admin
 CategoryRoutes.route('/')
   .get(CategoryController.get)
   .post(CategoryController.create);

@@ -36,9 +36,7 @@ export const create = validate(
           required_error: 'Product pictures are required',
         })
         .nonempty('Product pictures array cannot be empty'),
-      documents: z.array(documentSchema, {
-        required_error: 'Product documents are required',
-      }),
+      documents: z.array(documentSchema).default([]),
     }),
   })
 );
@@ -61,15 +59,25 @@ export const update = validate(
         .min(5, 'Product description must be at least 5 characters')
         .max(150, 'Product description must be a maximum of 150 characters')
         .optional(),
+      documents: z // In case the user wants to delete the entire array of documents
+        .string()
+        .refine(
+          (value) => value === '',
+          'Invalid "documents" input in the request body'
+        )
+        .transform(() => []) // Transform the property in a empty array
+        .optional(),
     }),
     // Here is necessary to treat the object that comes from multer lib
-    files: z.object({
-      pictures: z
-        .array(pictureSchema)
-        .nonempty('Product pictures array cannot be empty')
-        .optional(),
-      documents: z.array(documentSchema).optional(),
-    }),
+    files: z
+      .object({
+        pictures: z
+          .array(pictureSchema)
+          .nonempty('Product pictures array cannot be empty')
+          .optional(),
+        documents: z.array(documentSchema).optional(),
+      })
+      .optional(),
     params: z.object({
       _id: z.string({ required_error: 'Product ID is required' }),
     }),

@@ -47,8 +47,7 @@ const ProductSchema = new mongoose.Schema(
 
 ProductSchema.pre('remove', async function (next) {
   const populatedProduct = await this.populate(['pictures', 'documents']);
-
-  await FileModel.deleteManyWithStorage([
+  await FileModel.deleteFiles([
     ...populatedProduct.pictures,
     ...populatedProduct.documents,
   ]);
@@ -58,16 +57,38 @@ ProductSchema.pre('remove', async function (next) {
 ProductSchema.statics.createWithFiles = async function (inputData) {
   const { documents, pictures, ...data } = inputData;
 
-  const [picturesIds, documentsIds] = await Promise.all([
-    FileModel.putObjects(pictures),
-    FileModel.putObjects(documents),
+  const [createdPictures, createdDocuments] = await Promise.all([
+    FileModel.uploadFiles(pictures),
+    FileModel.uploadFiles(documents),
   ]);
+
+  const picturesIds = createdPictures.map(({ _id }) => _id);
+  const documentsIds = createdDocuments.map(({ _id }) => _id);
 
   return this.create({
     pictures: picturesIds,
     documents: documentsIds,
     ...data,
   });
+};
+
+ProductSchema.methods.updateFiles = async function (inputData) {
+  const newInputData = { ...inputData };
+
+  if (inputData.pictures) await FileModel.deleteFiles(this.pictures);
+  if (inputData.documents) await FileModel.deleteFiles(this.documents);
+
+  if (inputData?.pictures?.length) {
+    const newPictures = await FileModel.uploadFiles(inputData.pictures);
+    newInputData.pictures = newPictures.map(({ _id }) => _id);
+  }
+
+  if (inputData?.documents?.length) {
+    const newDocuments = await FileModel.uploadFiles(inputData.documents);
+    newInputData.documents = newDocuments.map(({ _id }) => _id);
+  }
+
+  return newInputData;
 };
 
 const ProductModel = mongoose.model('Product', ProductSchema);

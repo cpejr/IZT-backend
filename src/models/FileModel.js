@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import * as awsS3 from '../config/awsS3.js';
+import filesUrl from '../utils/files/filesUrl.js';
 
 const FileSchema = new mongoose.Schema(
   {
@@ -29,7 +30,7 @@ const FileSchema = new mongoose.Schema(
 
 FileSchema.pre('save', function (next) {
   if (!this.url) {
-    this.url = `${process.env.URL}/api/files/${this.key}`;
+    this.url = `${filesUrl}/${this.key}`;
   }
   next();
 });
@@ -37,35 +38,45 @@ FileSchema.pre('insertMany', function (next, docs) {
   docs.forEach((doc) => {
     if (!doc.url) {
       // eslint-disable-next-line no-param-reassign
-      doc.url = `${process.env.BACKEND_URL}/api/files/${doc.key}`;
+      doc.url = `${filesUrl}/${doc.key}`;
     }
   });
   next();
 });
 
-FileSchema.statics.putObject = async function (file) {
-  const uploadedFile = await awsS3.uploadOneFile(file);
-  const fileToCreate = { key: uploadedFile.key, ...file };
-  const insertedFile = await this.create(fileToCreate);
+FileSchema.statics.uploadOneFile = async function (file) {
+  const fileToCreate = await awsS3.uploadOneFile(file);
+  const createdFile = await this.create(fileToCreate);
 
-  return insertedFile._id;
+  return createdFile;
 };
-FileSchema.statics.putObjects = async function (files) {
-  const keys = (await awsS3.uploadFiles(files)).map(({ key }) => key);
-
-  const filesToInsert = files.map((file, idx) => ({ key: keys[idx], ...file }));
+FileSchema.statics.uploadFiles = async function (files) {
+  const filesToInsert = await awsS3.uploadFiles(files);
   const insertedFiles = await this.insertMany(filesToInsert);
 
-  return insertedFiles.map(({ _id }) => _id);
+  return insertedFiles;
 };
 
-FileSchema.statics.deleteManyWithStorage = async function (files) {
-  const deleteStorageRequests = files.map(({ key }) => awsS3.deleteFile(key));
-  const filesIds = files.map(({ _id }) => _id);
+FileSchema.statics.deleteOneFile = async function (fileId) {
+  if (!fileId) return;
+
+  const file = await this.findById(fileId).exec();
 
   await Promise.all([
-    this.deleteMany({ _id: filesIds }).exec(),
-    deleteStorageRequests,
+    this.remove({ _id: file._id }).exec(),
+    awsS3.deleteOneFile(file.key),
+  ]);
+};
+FileSchema.statics.deleteFiles = async function (filesIds) {
+  if (!filesIds.length) return;
+
+  const files = await this.find({ _id: filesIds }).exec();
+  const keys = files.map(({ key }) => key);
+  const ids = files.map(({ _id }) => _id);
+
+  await Promise.all([
+    this.deleteMany({ _id: ids }).exec(),
+    awsS3.deleteFiles(keys),
   ]);
 };
 

@@ -5,11 +5,15 @@ import fileDirName from '../utils/fileDirName.js';
 
 const { __dirname } = fileDirName(import.meta.url);
 
+const PORT = 4568;
+const ADDRESS = 'localhost';
+export const S3RVER_ENDPOINT = `http://${ADDRESS}:${PORT}`;
+
 export default function s3rverConfig() {
   return new Promise((resolve, reject) => {
     const instance = new S3rver({
-      port: 4569,
-      address: 'localhost',
+      port: PORT,
+      address: ADDRESS,
       silent: false,
       directory: path.resolve(__dirname, '../../temp/uploads'),
       resetOnClose: true,
