@@ -8,14 +8,15 @@ export const get = validate(
       name: z.string().optional(),
       isAdmin: z.boolean().optional(),
       isActive: z.boolean().optional(),
-      company: z.string().optional(),
       email: z.string().optional(),
       telephone: z.string().optional(),
       country: z.string().optional(),
       state: z.string().optional(),
       city: z.string().optional(),
-      zipCode: z.string().optional(),
       address: z.string().optional(),
+      number: z.string().optional(),
+      complement: z.string().optional(),
+      zipCode: z.string().optional(),
     }),
   })
 );
@@ -29,10 +30,13 @@ export const create = validate(
         .max(40, 'User name must be a maximum of 40 characters'),
       isAdmin: z.boolean().default(false),
       isActive: z.boolean().default(false),
-      company: z.string({ required_error: 'Company name is required' }),
       email: z
         .string({ required_error: 'User email is required' })
         .email('User email must be valid'),
+      password: z
+        .string({ required_error: 'Password email is required' })
+        .min(6, 'User password must be atleast 3 characters')
+        .max(16, 'User password must be a maximum of 30 characters'),
       telephone: z
         .string({ required_error: 'User telephone is required' })
         .max(15, 'User telephone must be a maximum of 15 characters')
@@ -43,21 +47,28 @@ export const create = validate(
         .max(30, 'User country must be a maximum of 30 characters'),
       state: z
         .string({ required_error: 'User state is required' })
-        .min(4, 'User state must be atleast 4 characters')
+        .min(3, 'User state must be atleast 3 characters')
         .max(30, 'User state must be a maximum of 30 characters'),
       city: z
         .string({ required_error: 'User city is required' })
         .min(3, 'User city must be atleast 3 characters')
         .max(30, 'User city must be a maximum of 30 characters'),
-      zipCode: z
-        .string({ required_error: 'User zip code is required' })
-        .min(5, 'User zip code must be atleast 5 characters')
-        .max(8, 'User zip code must be a maximum of 8 characters')
-        .regex(/^[0-9]{5}(?:-[0-9]{4})?$/, 'User zip code bad formatted'),
       address: z
         .string({ required_error: 'User address is required' })
         .min(3, 'User address must be atleast 3 characters')
         .max(50, 'User address must be a maximum of 50 characters'),
+      number: z
+        .string({ required_error: 'User number is required' })
+        .max(15, 'User number must be a maximum of 50 characters'),
+      complement: z
+        .string({ required_error: 'User complement is required' })
+        .min(3, 'User complement must be atleast 3 characters')
+        .max(50, 'User complement must be a maximum of 50 characters'),
+      zipCode: z
+        .string({ required_error: 'User zip code is required' })
+        .min(5, 'User zip code must be atleast 5 characters')
+        .max(9, 'User zip code must be a maximum of 8 characters')
+        .regex(/^\d{5}-\d{3}$/, 'User zip code bad formatted'), // TODO: support for multiple countries
     }),
   })
 );
@@ -72,8 +83,12 @@ export const update = validate(
         .optional(),
       isAdmin: z.boolean().optional(),
       isActive: z.boolean().optional(),
-      company: z.string().optional(),
       email: z.string().email('User email must be valid').optional(),
+      password: z
+        .string()
+        .min(6, 'User password must be atleast 3 characters')
+        .max(16, 'User password must be a maximum of 30 characters')
+        .optional(),
       telephone: z
         .string()
         .max(15, 'User telephone must be a maximum of 15 characters')
@@ -86,7 +101,7 @@ export const update = validate(
         .optional(),
       state: z
         .string()
-        .min(4, 'User state must be atleast 4 characters')
+        .min(3, 'User state must be atleast 3 characters')
         .max(30, 'User state must be a maximum of 30 characters')
         .optional(),
       city: z
@@ -94,16 +109,25 @@ export const update = validate(
         .min(3, 'User city must be atleast 3 characters')
         .max(30, 'User city must be a maximum of 30 characters')
         .optional(),
-      zipCode: z
-        .string()
-        .min(5, 'User zip code must be atleast 5 characters')
-        .max(8, 'User zip code must be a maximum of 8 characters')
-        .regex(/^[0-9]{5}(?:-[0-9]{4})?$/, 'User zip code bad formatted')
-        .optional(),
       address: z
         .string()
         .min(3, 'User address must be atleast 3 characters')
         .max(50, 'User address must be a maximum of 50 characters')
+        .optional(),
+      number: z
+        .string()
+        .max(15, 'User number must be a maximum of 50 characters')
+        .optional(),
+      complement: z
+        .string()
+        .min(3, 'User complement must be atleast 3 characters')
+        .max(50, 'User complement must be a maximum of 50 characters')
+        .optional(),
+      zipCode: z
+        .string()
+        .min(5, 'User zip code must be atleast 5 characters')
+        .max(9, 'User zip code must be a maximum of 8 characters')
+        .regex(/^\d{5}-\d{3}$/, 'User zip code bad formatted') // TODO: support for multiple countries
         .optional(),
     }),
     params: z.object({

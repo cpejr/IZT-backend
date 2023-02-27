@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import * as awsS3 from '../config/awsS3.js';
 import filesUrl from '../utils/files/filesUrl.js';
+import streamToBuffer from '../utils/streamToBuffer.js';
 
 const FileSchema = new mongoose.Schema(
   {
@@ -43,6 +44,15 @@ FileSchema.pre('insertMany', function (next, docs) {
   });
   next();
 });
+
+FileSchema.statics.getOneFile = async function (fileId) {
+  const { name, key } = await this.findById(fileId).exec();
+
+  const { Body: body, ContentType: contentType } = await awsS3.getFile(key);
+  const buffer = await streamToBuffer(body);
+
+  return { name, contentType, buffer };
+};
 
 FileSchema.statics.uploadOneFile = async function ({ file, ACL }) {
   const fileToCreate = await awsS3.uploadOneFile({ file, ACL });

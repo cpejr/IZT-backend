@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import CategoryRoutes from './CategoryRoutes/CategoryRoutes.js';
+import FileRoutes from './FileRoutes/FileRoutes.js';
 import FormContactRoutes from './FormContact/FormContact.js';
 import ProductRoutes from './ProductRoutes/ProductRoutes.js';
 import SessionRoutes from './SessionRoutes/SessionRoutes.js';
@@ -12,6 +13,7 @@ routes
   .use('/categories', CategoryRoutes)
   .use('/forms-contact', FormContactRoutes)
   .use('/products', ProductRoutes)
-  .use('/users', UserRoutes);
+  .use('/users', UserRoutes)
+  .use('/files', FileRoutes);
 
 export default routes;

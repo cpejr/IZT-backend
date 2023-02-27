@@ -28,11 +28,11 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    nacionality: {
+    telephone: {
       type: String,
       required: true,
     },
-    telephone: {
+    country: {
       type: String,
       required: true,
     },
@@ -41,10 +41,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     city: {
-      type: String,
-      required: true,
-    },
-    zipCode: {
       type: String,
       required: true,
     },
@@ -57,6 +53,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     complement: {
+      type: String,
+      required: true,
+    },
+    zipCode: {
       type: String,
       required: true,
     },
