@@ -1,6 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import jwt from 'jsonwebtoken';
-// import formatExpiresAt from '../utils/formatExpiresAt.js';
-// import asyncHandler from '../utils/asyncHandler.js';
+import formatExpiresAt from '../utils/formatExpiresAt.js';
+import asyncHandler from '../utils/asyncHandler.js';
 import UserModel from '../models/UsersModel.js';
 import UserTokenModel from '../models/UserTokenModel.js';
 import { UnauthorizedError, ForbiddenError } from '../errors/BaseErrors.js';
@@ -17,7 +18,7 @@ export const handleLogin = asyncHandler(async (req, res) => {
   if (!isMatch) throw new UnauthorizedError('Wrong email or password.');
 
   // evaluate token reuse
-  const cookies = req.cookies;
+  const { cookies } = req;
   if (cookies?.jwt) {
     const refreshToken = cookies.jwt;
     const foundToken = await UserTokenModel.findOne({
@@ -35,9 +36,6 @@ export const handleLogin = asyncHandler(async (req, res) => {
   }
 
   // create JWTs
-  // const refreshTokenExpireTime = +(rememberMe
-  //   ? process.env.REFRESH_TOKEN_EXPIRE_REMEMBER_ME
-  //   : process.env.REFRESH_TOKEN_EXPIRE_NOT_REMEMBER_ME);
   const accessToken = jwt.sign(
     {
       userId: foundUser._id,
@@ -49,11 +47,11 @@ export const handleLogin = asyncHandler(async (req, res) => {
   const newRefreshToken = jwt.sign(
     { userId: foundUser._id },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: refreshTokenExpireTime } // in seconds
+    { expiresIn: +process.env.REFRESH_TOKEN_EXPIRE } // in seconds
   );
 
   // Saving refreshToken in the DB
-  const expiresAt = formatExpiresAt(refreshTokenExpireTime); // in seconds
+  const expiresAt = formatExpiresAt(process.env.REFRESH_TOKEN_EXPIRE); // in seconds
   await UserTokenModel.create({
     user: foundUser._id,
     token: newRefreshToken,
@@ -65,15 +63,15 @@ export const handleLogin = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: 'None',
-    maxAge: refreshTokenExpireTime * 1000, // in miliseconds
+    maxAge: process.env.REFRESH_TOKEN_EXPIRE * 1000, // in miliseconds
   });
 
   // Send access token to user
-  res.json({ accessToken });
+  res.status(200).json({ accessToken });
 });
 
 export const handleRefreshToken = asyncHandler(async (req, res) => {
-  const cookies = req.cookies;
+  const { cookies } = req;
   if (!cookies?.jwt) throw new UnauthorizedError('Unauthorized');
 
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
@@ -86,27 +84,23 @@ export const handleRefreshToken = asyncHandler(async (req, res) => {
   const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
   if (!foundToken) {
-    console.log('HACKEEEEED');
-    const hackedUser = await User.findOne({
+    const hackedUser = await UserModel.findOne({
       _id: decoded.userId,
     }).exec();
     await UserTokenModel.deleteMany({ user: hackedUser._id }).exec();
     throw new ForbiddenError('Token reuse');
   }
   const userId = foundToken.user._id.toString();
-  const role = foundToken.user.role;
+  const isAdmin = foundToken.user.isAdmin;
 
   if (userId !== decoded.userId) throw new ForbiddenError('Tampered token');
 
   // Refresh token still valid
   await foundToken.delete(); // Invalidate actual refresh token
-  const refreshTokenExpireTime = +(foundToken.rememberMe
-    ? process.env.REFRESH_TOKEN_EXPIRE_REMEMBER_ME
-    : process.env.REFRESH_TOKEN_EXPIRE_NOT_REMEMBER_ME);
   const accessToken = jwt.sign(
     {
       userId,
-      role,
+      isAdmin,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: +process.env.ACCESS_TOKEN_EXPIRE } // in seconds
@@ -114,15 +108,14 @@ export const handleRefreshToken = asyncHandler(async (req, res) => {
   const newRefreshToken = jwt.sign(
     { userId },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: refreshTokenExpireTime } // in seconds
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRE } // in seconds
   );
 
   // Creating a instance of the refresh token in the db
-  const expiresAt = formatExpiresAt(refreshTokenExpireTime); // in miliseconds
+  const expiresAt = formatExpiresAt(process.env.REFRESH_TOKEN_EXPIRE); // in miliseconds
   await UserTokenModel.create({
     user: userId,
     token: newRefreshToken,
-    rememberMe: foundToken.rememberMe,
     expiresAt,
   });
 
@@ -131,8 +124,8 @@ export const handleRefreshToken = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: 'None',
-    maxAge: refreshTokenExpireTime * 1000, // time in miliseconds
+    maxAge: process.env.REFRESH_TOKEN_EXPIRE * 1000, // time in miliseconds
   });
 
-  res.json({ accessToken });
+  res.status(200).json({ accessToken });
 });
