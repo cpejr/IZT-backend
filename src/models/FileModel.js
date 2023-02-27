@@ -44,14 +44,14 @@ FileSchema.pre('insertMany', function (next, docs) {
   next();
 });
 
-FileSchema.statics.uploadOneFile = async function (file) {
-  const fileToCreate = await awsS3.uploadOneFile(file);
+FileSchema.statics.uploadOneFile = async function ({ file, ACL }) {
+  const fileToCreate = await awsS3.uploadOneFile({ file, ACL });
   const createdFile = await this.create(fileToCreate);
 
   return createdFile;
 };
-FileSchema.statics.uploadFiles = async function (files) {
-  const filesToInsert = await awsS3.uploadFiles(files);
+FileSchema.statics.uploadFiles = async function ({ files, ACL }) {
+  const filesToInsert = await awsS3.uploadFiles({ files, ACL });
   const insertedFiles = await this.insertMany(filesToInsert);
 
   return insertedFiles;
