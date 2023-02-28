@@ -4,6 +4,8 @@ import {
   PutObjectCommand,
   DeleteObjectCommand,
   DeleteObjectsCommand,
+  GetBucketCorsCommand,
+  PutBucketCorsCommand,
 } from '@aws-sdk/client-s3';
 import randomFileName from '../utils/files/ramdomFileName.js';
 import isDevEnvironment from '../utils/isDevEnvironment.js';
@@ -64,4 +66,31 @@ export async function deleteFiles(keys) {
   };
 
   return s3.send(new DeleteObjectsCommand(params));
+}
+
+export async function getCors() {
+  const bucketParams = { Bucket: process.env.AWS_BUCKET_NAME };
+  return s3.send(new GetBucketCorsCommand(bucketParams));
+}
+
+export async function configCors({
+  allowedOrigins = ['*'],
+  allowedMethods = ['POST', 'GET', 'PUT', 'DELETE', 'HEAD'],
+  exposeHeaders = [],
+  maxAgeSeconds = 3000,
+} = {}) {
+  const config = {
+    AllowedHeaders: ['Authorization'],
+    AllowedMethods: allowedMethods,
+    AllowedOrigins: allowedOrigins,
+    ExposeHeaders: exposeHeaders,
+    MaxAgeSeconds: maxAgeSeconds,
+  };
+
+  const corsParams = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    CORSConfiguration: { CORSRules: new Array(config) },
+  };
+
+  return s3.send(new PutBucketCorsCommand(corsParams));
 }

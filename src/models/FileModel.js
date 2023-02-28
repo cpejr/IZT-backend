@@ -45,13 +45,11 @@ FileSchema.pre('insertMany', function (next, docs) {
   next();
 });
 
-FileSchema.statics.getOneFile = async function (fileId) {
-  const { name, key } = await this.findById(fileId).exec();
-
+FileSchema.statics.getOneFile = async function (key) {
   const { Body: body, ContentType: contentType } = await awsS3.getFile(key);
   const buffer = await streamToBuffer(body);
 
-  return { name, contentType, buffer };
+  return { contentType, buffer };
 };
 
 FileSchema.statics.uploadOneFile = async function ({ file, ACL }) {
