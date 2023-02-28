@@ -1,27 +1,27 @@
 import mongoose from 'mongoose';
 
-const userTokenSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Types.ObjectId,
-    ref: 'User',
-    required: true,
+const UserTokenSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Types.ObjectId,
+      ref: 'User',
+      required: true,
+      unique: true,
+    },
+    token: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
   },
-  token: {
-    type: String,
-    required: true,
-  },
-  expiresAt: {
-    type: Date,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-  },
-});
+  { timestamps: true, versionKey: false }
+);
 
-userTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+UserTokenSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-const UserTokenModel = mongoose.model('UserToken', userTokenSchema);
-
+const UserTokenModel = mongoose.model('UserToken', UserTokenSchema);
 export default UserTokenModel;

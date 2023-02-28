@@ -22,6 +22,8 @@ if (isDevEnvironment) app.use(morgan('dev'));
 
 // Routes
 app.use('/api', routes);
+
+// Non existing routes
 app.all('*', (req, res, next) => {
   next(new NotFoundError('Route not found'));
 });

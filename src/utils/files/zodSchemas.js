@@ -8,28 +8,28 @@ const zodFileSchema = ({ fileName, allowedMimeTypes, sizeLimitInMB }) =>
       originalname: z.string({
         required_error: `${fileName} original name is required`,
       }),
+      buffer: z.instanceof(Buffer, {
+        message: 'Buffer property need to be of type Buffer',
+      }),
       size: z
         .number({ required_error: `${fileName} size is required` })
         .lte(
           numToMegaBytes(sizeLimitInMB),
           `${fileName} cannot be bigger than ${sizeLimitInMB} MB`
         ),
-      key: z.string({ required_error: `${fileName} key is required` }),
       mimetype: z.enum(allowedMimeTypes, {
         errorMap: () => ({
-          message: `Invalid ${fileName} mime type. Only allowed: ${allowedMimeTypes.toString()}`,
+          message: `Invalid ${fileName} mime type. Only allowed: ${allowedMimeTypes.join(
+            ', '
+          )}`,
         }),
       }),
-      location: z.string().default(''),
     })
-    .transform(
-      ({ originalname: name, mimetype: mimeType, location: url, ...rest }) => ({
-        name,
-        mimeType,
-        url,
-        ...rest,
-      })
-    );
+    .transform(({ originalname: name, mimetype: mimeType, ...rest }) => ({
+      name,
+      mimeType,
+      ...rest,
+    }));
 
 export const documentSchema = zodFileSchema({
   fileName: 'Document',

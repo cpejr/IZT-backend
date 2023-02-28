@@ -1,12 +1,12 @@
 import { Router } from 'express';
+import * as UserController from '../../controllers/UserController.js';
 
 const UserRoutes = Router();
 
-// Exclusively for admin
-UserRoutes.route('/')
-  .get(/* UserController */)
-  .post(/* UserController */)
-  .put(/* UserController */)
-  .delete(/* UserController */);
+UserRoutes.route('/').get(UserController.get).post(UserController.create);
+
+UserRoutes.route('/:_id')
+  .put(UserController.update)
+  .delete(UserController.destroy);
 
 export default UserRoutes;

@@ -2,6 +2,8 @@
 import 'dotenv/config';
 import logger from './config/logger.js';
 import mongoConfig from './config/mongo.js';
+import s3rverConfig from './config/s3rver.js';
+import isDevEnvironment from './utils/isDevEnvironment.js';
 
 process.on('uncaughtException', (err) => {
   logger.error(err, 'Uncaught exception');
@@ -18,6 +20,7 @@ process.on('unhandledRejection', (err) => {
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, async () => {
   try {
+    if (isDevEnvironment) await s3rverConfig();
     await mongoConfig();
     logger.info(`✅ Server started at port ${PORT}`);
   } catch (err) {
