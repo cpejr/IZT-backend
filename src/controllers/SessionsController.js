@@ -2,13 +2,13 @@
 import jwt from 'jsonwebtoken';
 import formatExpiresAt from '../utils/formatExpiresAt.js';
 import asyncHandler from '../utils/asyncHandler.js';
-import UserModel from '../models/UsersModel.js';
+import UserModel from '../models/UserModel.js';
 import UserTokenModel from '../models/UserTokenModel.js';
 import { UnauthorizedError, ForbiddenError } from '../errors/BaseErrors.js';
 import loginValidator from '../validators/SessionsValidator.js';
 
 export const handleLogin = asyncHandler(async (req, res) => {
-  const { email, password } = loginValidator.parse(req);
+  const { email, password } = loginValidator(req);
 
   const foundUser = await UserModel.findOne({ email }).exec();
   if (!foundUser) throw new UnauthorizedError('Wrong email or password.');
@@ -42,12 +42,12 @@ export const handleLogin = asyncHandler(async (req, res) => {
       role: foundUser.role,
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: +process.env.ACCESS_TOKEN_EXPIRE } // in seconds
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRE } // in seconds
   );
   const newRefreshToken = jwt.sign(
     { userId: foundUser._id },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: +process.env.REFRESH_TOKEN_EXPIRE } // in seconds
+    { expiresIn: process.env.REFRESH_TOKEN_EXPIRE } // in seconds
   );
 
   // Saving refreshToken in the DB
@@ -91,7 +91,7 @@ export const handleRefreshToken = asyncHandler(async (req, res) => {
     throw new ForbiddenError('Token reuse');
   }
   const userId = foundToken.user._id.toString();
-  const isAdmin = foundToken.user.isAdmin;
+  const { isAdmin } = foundToken.user;
 
   if (userId !== decoded.userId) throw new ForbiddenError('Tampered token');
 
