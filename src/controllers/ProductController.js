@@ -5,7 +5,6 @@ import { SUCCESS_CODES } from '../utils/constants.js';
 import { NotFoundError } from '../errors/BaseErrors.js';
 
 export const get = asyncHandler(async (req, res) => {
-  console.log(req.body);
   const inputFilters = ProductValidator.get(req);
   const products = await ProductModel.find(inputFilters)
     .populate(['category', 'pictures', 'documents'])
