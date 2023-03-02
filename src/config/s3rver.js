@@ -14,7 +14,7 @@ export default function s3rverConfig() {
     const instance = new S3rver({
       port: PORT,
       address: ADDRESS,
-      silent: false,
+      silent: true,
       directory: path.resolve(__dirname, '../../temp/uploads'),
       resetOnClose: true,
       configureBuckets: [
