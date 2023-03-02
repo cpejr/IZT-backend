@@ -1,10 +1,11 @@
 import { Router } from 'express';
+import emailSender from '../../config/emailSender.js';
 
 const FormContactRoutes = Router();
 
 // Exclusively for admin
 FormContactRoutes.route('/')
-  .get(/* FormContactController */)
+  .get(emailSender)
   .post(/* FormContactController */)
   .put(/* FormContactController */)
   .delete(/* FormContactController */);
