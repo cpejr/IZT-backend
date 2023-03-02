@@ -6,6 +6,7 @@ import UserModel from '../models/UserModel.js';
 import UserTokenModel from '../models/UserTokenModel.js';
 import { UnauthorizedError, ForbiddenError } from '../errors/BaseErrors.js';
 import loginValidator from '../validators/SessionsValidator.js';
+import { SUCCESS_CODES } from '../utils/constants.js';
 
 export const handleLogin = asyncHandler(async (req, res) => {
   const { email, password } = loginValidator(req);
@@ -27,7 +28,6 @@ export const handleLogin = asyncHandler(async (req, res) => {
 
     // Detected refresh token reuse! Clear all existing refreshTokens
     if (!foundToken) await UserTokenModel.deleteMany({ user: foundUser._id });
-    console.log(cookies);
     res.clearCookie('jwt', {
       httpOnly: true,
       sameSite: 'None',
@@ -39,15 +39,15 @@ export const handleLogin = asyncHandler(async (req, res) => {
   const accessToken = jwt.sign(
     {
       userId: foundUser._id,
-      role: foundUser.role,
+      isAdmin: foundUser.isAdmin,
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: process.env.ACCESS_TOKEN_EXPIRE } // in seconds
+    { expiresIn: +process.env.ACCESS_TOKEN_EXPIRE } // in seconds
   );
   const newRefreshToken = jwt.sign(
     { userId: foundUser._id },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: process.env.REFRESH_TOKEN_EXPIRE } // in seconds
+    { expiresIn: +process.env.REFRESH_TOKEN_EXPIRE } // in seconds
   );
 
   // Saving refreshToken in the DB
@@ -67,7 +67,7 @@ export const handleLogin = asyncHandler(async (req, res) => {
   });
 
   // Send access token to user
-  res.status(200).json({ accessToken });
+  res.status(SUCCESS_CODES.OK).json({ accessToken });
 });
 
 export const handleRefreshToken = asyncHandler(async (req, res) => {
@@ -108,7 +108,7 @@ export const handleRefreshToken = asyncHandler(async (req, res) => {
   const newRefreshToken = jwt.sign(
     { userId },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: process.env.REFRESH_TOKEN_EXPIRE } // in seconds
+    { expiresIn: +process.env.REFRESH_TOKEN_EXPIRE } // in seconds
   );
 
   // Creating a instance of the refresh token in the db
@@ -127,5 +127,17 @@ export const handleRefreshToken = asyncHandler(async (req, res) => {
     maxAge: process.env.REFRESH_TOKEN_EXPIRE * 1000, // time in miliseconds
   });
 
-  res.status(200).json({ accessToken });
+  res.status(SUCCESS_CODES.OK).json({ accessToken });
+});
+
+export const handleLogout = asyncHandler(async (req, res) => {
+  const { cookies } = req;
+  if (!cookies?.jwt) return res.sendStatus(SUCCESS_CODES.NO_CONTENT); // No content
+
+  // delete refresh token if exists in db
+  const refreshToken = cookies.jwt;
+  await UserTokenModel.findOne({ token: refreshToken }).deleteOne().exec();
+
+  res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+  return res.sendStatus(SUCCESS_CODES.NO_CONTENT);
 });

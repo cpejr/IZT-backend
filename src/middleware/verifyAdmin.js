@@ -1,11 +1,10 @@
-import ForbiddenError from '../errors/BaseErrors.js';
+import { ForbiddenError } from '../errors/BaseErrors.js';
+import asyncHandler from '../utils/asyncHandler.js';
 
-const verifyAdmin = () => {
-  return (req, res, next) => {
-    if (!req?.isAdmin) throw new ForbiddenError('Access denied');
+const verifyAdmin = asyncHandler(async (req, res, next) => {
+  if (!req?.isAdmin) throw new ForbiddenError('Access denied');
 
-    next();
-  };
-};
+  next();
+});
 
 export default verifyAdmin;
