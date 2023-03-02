@@ -1,12 +1,10 @@
 import { Router } from 'express';
+import sendFormContactEmail from '../../controllers/FormContactController.js';
 
 const FormContactRoutes = Router();
 
 // Exclusively for admin
-FormContactRoutes.route('/')
-  .get(/* FormContactController */)
-  .post(/* FormContactController */)
-  .put(/* FormContactController */)
-  .delete(/* FormContactController */);
+
+FormContactRoutes.post('/', sendFormContactEmail);
 
 export default FormContactRoutes;
