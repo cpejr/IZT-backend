@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import uploader from '../../config/multer.js';
 import * as ProductController from '../../controllers/ProductController.js';
+import verifyAdmin from '../../middleware/verifyAdmin.js';
+import verifyJWT from '../../middleware/verifyJWT.js';
 
 const ProductRoutes = Router();
 const processFilesMiddeware = uploader.fields([
@@ -9,7 +11,7 @@ const processFilesMiddeware = uploader.fields([
 ]);
 
 ProductRoutes.route('/')
-  .get(ProductController.get)
+  .get(verifyJWT, verifyAdmin, ProductController.get)
   .post(processFilesMiddeware, ProductController.create);
 
 ProductRoutes.route('/:_id')

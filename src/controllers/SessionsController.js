@@ -1,12 +1,11 @@
-/* eslint-disable no-underscore-dangle */
 import jwt from 'jsonwebtoken';
+import { SUCCESS_CODES } from '../utils/constants.js';
 import formatExpiresAt from '../utils/formatExpiresAt.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import UserModel from '../models/UserModel.js';
 import UserTokenModel from '../models/UserTokenModel.js';
 import { UnauthorizedError, ForbiddenError } from '../errors/BaseErrors.js';
 import loginValidator from '../validators/SessionsValidator.js';
-import { SUCCESS_CODES } from '../utils/constants.js';
 
 export const handleLogin = asyncHandler(async (req, res) => {
   const { email, password } = loginValidator(req);
