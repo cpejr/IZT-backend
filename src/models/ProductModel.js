@@ -18,6 +18,10 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    advantages: {
+      type: String,
+      required: true,
+    },
     purchases: {
       type: Number,
       required: true,

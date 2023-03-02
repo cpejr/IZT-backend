@@ -11,6 +11,7 @@ export const get = validate(
       pictures: z.string().optional(), // Query with the _id of one picture
       purchases: z.number().optional(),
       description: z.string().optional(),
+      advantages: z.string().optional(),
       documents: z.string().optional(), // Query with the _id of one document
     }),
   })
@@ -28,6 +29,10 @@ export const create = validate(
         .string({ required_error: 'Product description is required' })
         .min(5, 'Product description must be at least 5 characters')
         .max(150, 'Product description must be a maximum of 150 characters'),
+      advantages: z
+        .string({ required_error: 'Product advantages is required' })
+        .min(5, 'Product advantages must be at least 5 characters')
+        .max(150, 'Product advantages must be a maximum of 150 characters'),
     }),
     // Here is necessary to treat the object that comes from multer lib
     files: z.object({
@@ -58,6 +63,11 @@ export const update = validate(
         .string()
         .min(5, 'Product description must be at least 5 characters')
         .max(150, 'Product description must be a maximum of 150 characters')
+        .optional(),
+      advantages: z
+        .string()
+        .min(5, 'Product advantages must be at least 5 characters')
+        .max(150, 'Product advantages must be a maximum of 150 characters')
         .optional(),
       documents: z // In case the user wants to delete the entire array of documents
         .string()
