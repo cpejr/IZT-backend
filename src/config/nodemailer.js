@@ -43,14 +43,14 @@ export default class Email {
   }
 }
 
-async function main() {
-  const mailOptions = {
-    to: 'joaopiraja@cpejr.com.br',
-    subject: 'Test email for the tutorial',
-    text: 'Here is the text of the test email',
-    html: '<h1>HTML</h1><p>Here is the text in a paragraph for the test email</p>',
-  };
-  return Email.sendEmail(mailOptions);
-}
+// async function main() {
+//   const mailOptions = {
+//     to: 'joaopiraja@cpejr.com.br',
+//     subject: 'Test email for the tutorial',
+//     text: 'Here is the text of the test email',
+//     html: '<h1>HTML</h1><p>Here is the text in a paragraph for the test email</p>',
+//   };
+//   return Email.sendEmail(mailOptions);
+// }
 
-main();
+// main();

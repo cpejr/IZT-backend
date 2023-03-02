@@ -2,6 +2,7 @@ import proxyMiddleware from 'http-proxy-middleware';
 import MailDev from 'maildev';
 import logger from './logger.js';
 
+const mailDevUrl = 'http://localhost:1080';
 export default function maildevConfig() {
   return new Promise((resolve, reject) => {
     const maildev = new MailDev({
@@ -16,7 +17,9 @@ export default function maildevConfig() {
         );
         reject(err);
       } else {
-        logger.info(`✅ Established connection with maildev`);
+        logger.info(
+          `✅ Established connection with maildev in ${mailDevUrl}/maildev`
+        );
         resolve();
       }
     });
@@ -24,7 +27,7 @@ export default function maildevConfig() {
 }
 
 export const mailDevProxy = proxyMiddleware.createProxyMiddleware('/maildev', {
-  target: `http://localhost:1080`,
+  target: mailDevUrl,
   ws: true,
   logLevel: 'silent',
 });
