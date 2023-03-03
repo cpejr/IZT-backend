@@ -1,6 +1,6 @@
-import './loadDotEnv.js';
 import nodemailer from 'nodemailer';
 import logger from './logger.js';
+import { InternalServerError } from '../errors/BaseErrors.js';
 
 const transporterConfig = {
   development: {
@@ -35,22 +35,9 @@ export default class Email {
       await transporter.sendMail(config);
       logger.info(`Email sended from ${config.from} to ${config.to}`);
     } catch (error) {
-      logger.error(
-        error,
-        `Nodemailer error in sending email with config: ${config}`
+      throw new InternalServerError(
+        `Nodemailer error in sending email: ${error.message}`
       );
     }
   }
 }
-
-// async function main() {
-//   const mailOptions = {
-//     to: 'joaopiraja@cpejr.com.br',
-//     subject: 'Test email for the tutorial',
-//     text: 'Here is the text of the test email',
-//     html: '<h1>HTML</h1><p>Here is the text in a paragraph for the test email</p>',
-//   };
-//   return Email.sendEmail(mailOptions);
-// }
-
-// main();
