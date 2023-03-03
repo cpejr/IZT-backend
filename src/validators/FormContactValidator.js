@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import validate from './validate.js';
 
-const createFormContact = validate(
+// eslint-disable-next-line import/prefer-default-export
+export const email = validate(
   z.object({
     body: z.object({
       company: z.string({ required_error: 'Company name is required' }),
@@ -22,5 +23,3 @@ const createFormContact = validate(
     }),
   })
 );
-
-export default createFormContact;

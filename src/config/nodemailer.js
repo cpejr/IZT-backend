@@ -1,6 +1,6 @@
-import './loadDotEnv.js';
 import nodemailer from 'nodemailer';
 import logger from './logger.js';
+import { InternalServerError } from '../errors/BaseErrors.js';
 
 const transporterConfig = {
   development: {
@@ -35,9 +35,8 @@ export default class Email {
       await transporter.sendMail(config);
       logger.info(`Email sended from ${config.from} to ${config.to}`);
     } catch (error) {
-      logger.error(
-        error,
-        `Nodemailer error in sending email with config: ${config}`
+      throw new InternalServerError(
+        `Nodemailer error in sending email: ${error.message}`
       );
     }
   }

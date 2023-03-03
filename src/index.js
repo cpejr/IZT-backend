@@ -1,5 +1,4 @@
 /* eslint-disable import/first */
-import './config/loadDotEnv.js';
 import logger from './config/logger.js';
 import mongoConfig from './config/mongo.js';
 import s3rverConfig from './config/s3rver.js';
