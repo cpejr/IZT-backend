@@ -5,19 +5,19 @@ import asyncHandler from '../utils/asyncHandler.js';
 import UserModel from '../models/UserModel.js';
 import UserTokenModel from '../models/UserTokenModel.js';
 import { UnauthorizedError, ForbiddenError } from '../errors/BaseErrors.js';
-import loginValidator from '../validators/SessionsValidator.js';
+import * as SessionValidator from '../validators/SessionValidator.js';
 
 export const handleLogin = asyncHandler(async (req, res) => {
-  const { email, password } = loginValidator(req);
+  const { email, password } = SessionValidator.login(req);
 
-  const foundUser = await UserModel.findOne({ email }).exec();
+  const foundUser = await UserModel.findOne({ email, isActive: true }).exec();
   if (!foundUser) throw new UnauthorizedError('Wrong email or password.');
 
-  // evaluate password
+  // Evaluate password
   const isMatch = await foundUser.comparePassword(password);
   if (!isMatch) throw new UnauthorizedError('Wrong email or password.');
 
-  // evaluate token reuse
+  // Evaluate token reuse
   const { cookies } = req;
   if (cookies?.jwt) {
     const refreshToken = cookies.jwt;
@@ -34,7 +34,7 @@ export const handleLogin = asyncHandler(async (req, res) => {
     });
   }
 
-  // create JWTs
+  // Create JWTs
   const accessToken = jwt.sign(
     {
       userId: foundUser._id,
@@ -133,7 +133,7 @@ export const handleLogout = asyncHandler(async (req, res) => {
   const { cookies } = req;
   if (!cookies?.jwt) return res.sendStatus(SUCCESS_CODES.NO_CONTENT); // No content
 
-  // delete refresh token if exists in db
+  // Delete refresh token if exists in db
   const refreshToken = cookies.jwt;
   await UserTokenModel.findOne({ token: refreshToken }).deleteOne().exec();
 
