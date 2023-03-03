@@ -8,7 +8,6 @@ import corsOptions from './config/cors.js';
 import routes from './routes/index.js';
 import isDevEnvironment from './utils/isDevEnvironment.js';
 import { NotFoundError } from './errors/BaseErrors.js';
-import { mailDevProxy } from './config/mailDev.js';
 
 // Inicializando instância do servidor express
 const app = express();
@@ -19,10 +18,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(helmet());
-if (isDevEnvironment) {
-  app.use(morgan('dev'));
-  app.use(mailDevProxy);
-}
+if (isDevEnvironment) app.use(morgan('dev'));
 
 // Routes
 app.use('/api', routes);
