@@ -1,5 +1,5 @@
 /* eslint-disable import/first */
-import 'dotenv/config';
+import './config/loadDotEnv.js';
 import logger from './config/logger.js';
 import mongoConfig from './config/mongo.js';
 import s3rverConfig from './config/s3rver.js';
@@ -11,6 +11,7 @@ process.on('uncaughtException', (err) => {
 });
 
 import app from './app.js';
+import maildevConfig from './config/mailDev.js';
 
 process.on('unhandledRejection', (err) => {
   logger.error(err, 'Unhandled rejection');
@@ -20,7 +21,10 @@ process.on('unhandledRejection', (err) => {
 const PORT = process.env.PORT || 3333;
 app.listen(PORT, async () => {
   try {
-    if (isDevEnvironment) await s3rverConfig();
+    if (isDevEnvironment) {
+      await s3rverConfig();
+      await maildevConfig();
+    }
     await mongoConfig();
     logger.info(`✅ Server started at port ${PORT}`);
   } catch (err) {
