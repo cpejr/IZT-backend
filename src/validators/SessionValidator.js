@@ -1,7 +1,8 @@
 import { z } from 'zod';
 import validate from './validate.js';
 
-const loginValidator = validate(
+// eslint-disable-next-line import/prefer-default-export
+export const login = validate(
   z.object({
     body: z.object({
       email: z
@@ -14,5 +15,3 @@ const loginValidator = validate(
     }),
   })
 );
-
-export default loginValidator;
