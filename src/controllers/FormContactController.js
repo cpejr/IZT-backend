@@ -12,12 +12,21 @@ const sendFormContactEmail = asyncHandler(async (req, res) => {
     html: `
     <style>
     h1 {
-      font-size: 24px;
+      font-size: 20px;
       font-weight: bold;
+      font-family: Arial, sans-serif;
     }
+    h2 {
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+      font-weight: 400px;
+    }
+  
     </style>
-
+    <img src="https://preview.redd.it/ipjd0lwzdfla1.png?width=960&crop=smart&auto=webp&v=enabled&s=e2f89f34e0a81b726e164109b775d7b1e8599909" alt="My Company Logo" width="50" height="50">
     <h1>These are the informations about a new client</h1>
+    <h2>Hi Luiz! These are your new client informations!</h2>
+
     <table>
       <tr>
         <td>Company: </td>
