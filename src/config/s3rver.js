@@ -2,6 +2,7 @@ import path from 'node:path';
 import S3rver from 's3rver';
 import logger from './logger.js';
 import fileDirName from '../utils/fileDirName.js';
+import { InternalServerError } from '../errors/BaseErrors.js';
 
 const { __dirname } = fileDirName(import.meta.url);
 
@@ -26,7 +27,7 @@ export default function s3rverConfig() {
 
     instance.run((error, { address, port } = {}) => {
       if (error) {
-        const err = new Error(
+        const err = new InternalServerError(
           `❌ Failed to connect to S3rver. Error: ${error}.`
         );
         reject(err);

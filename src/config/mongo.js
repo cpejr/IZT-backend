@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { InternalServerError } from '../errors/BaseErrors.js';
 import logger from './logger.js';
 
 mongoose.Promise = global.Promise;
@@ -22,7 +23,7 @@ export default function mongoConfig() {
     });
 
     mongoose.connection.on('error', (error) => {
-      const err = new Error(
+      const err = new InternalServerError(
         `❌ Failed to connect to mongoDB. Error: ${error}.`
       );
       reject(err);
