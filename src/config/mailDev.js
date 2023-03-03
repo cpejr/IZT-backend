@@ -1,8 +1,8 @@
-import proxyMiddleware from 'http-proxy-middleware';
 import MailDev from 'maildev';
 import logger from './logger.js';
+import { InternalServerError } from '../errors/BaseErrors.js';
 
-const mailDevUrl = 'http://localhost:1080';
+export const mailDevUrl = 'http://localhost:1080';
 export default function maildevConfig() {
   return new Promise((resolve, reject) => {
     const maildev = new MailDev({
@@ -12,7 +12,7 @@ export default function maildevConfig() {
 
     maildev.listen((error) => {
       if (error) {
-        const err = new Error(
+        const err = new InternalServerError(
           `❌ Failed to connect to maildev. Error: ${error}.`
         );
         reject(err);
@@ -25,9 +25,3 @@ export default function maildevConfig() {
     });
   });
 }
-
-export const mailDevProxy = proxyMiddleware.createProxyMiddleware('/maildev', {
-  target: mailDevUrl,
-  ws: true,
-  logLevel: 'silent',
-});

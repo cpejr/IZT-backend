@@ -8,7 +8,7 @@ import corsOptions from './config/cors.js';
 import routes from './routes/index.js';
 import isDevEnvironment from './utils/isDevEnvironment.js';
 import { NotFoundError } from './errors/BaseErrors.js';
-import { mailDevProxy } from './config/mailDev.js';
+import mailDevProxy from './middleware/mailDevProxy.js';
 
 // Inicializando instância do servidor express
 const app = express();
