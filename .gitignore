@@ -9,8 +9,9 @@ lerna-debug.log*
 
 node_modules
 .env
+.env.development
+.env.production
 .editorconfig
-.env
 
 # Editor directories and files
 .vscode/*

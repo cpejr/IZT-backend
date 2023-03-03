@@ -1,18 +1,17 @@
 import mongoose from 'mongoose';
-import isDevEnvironment from '../utils/isDevEnvironment.js';
+import { InternalServerError } from '../errors/BaseErrors.js';
 import logger from './logger.js';
 
 mongoose.Promise = global.Promise;
 
 export default function mongoConfig() {
   return new Promise((resolve, reject) => {
-    const MONGO_DATABASE = isDevEnvironment ? 'DevelopmentDB' : 'ProductionDB';
     const mongoUrl =
       'mongodb+srv://' +
       `${encodeURI(process.env.MONGO_USER)}:` +
       `${encodeURI(process.env.MONGO_PASS)}@` +
       `${encodeURI(process.env.MONGO_SERVER)}/` +
-      `${encodeURI(MONGO_DATABASE)}?` +
+      `${encodeURI(process.env.MONGO_DATABASE)}?` +
       `${encodeURI(process.env.MONGO_OPTIONS)}`;
 
     mongoose.set('strictQuery', true);
@@ -24,7 +23,7 @@ export default function mongoConfig() {
     });
 
     mongoose.connection.on('error', (error) => {
-      const err = new Error(
+      const err = new InternalServerError(
         `❌ Failed to connect to mongoDB. Error: ${error}.`
       );
       reject(err);
