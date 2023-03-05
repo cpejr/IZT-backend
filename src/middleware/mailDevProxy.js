@@ -1,5 +1,5 @@
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { mailDevUrl } from '../config/mailDev.js';
+import { mailDevUrl } from '../config/mail/mailDev.js';
 
 const mailDevProxy = createProxyMiddleware('/maildev', {
   target: mailDevUrl,

@@ -7,8 +7,8 @@ import {
   GetBucketCorsCommand,
   PutBucketCorsCommand,
 } from '@aws-sdk/client-s3';
-import randomFileName from '../utils/files/ramdomFileName.js';
-import isDevEnvironment from '../utils/isDevEnvironment.js';
+import randomFileName from '../../utils/files/ramdomFileName.js';
+import isDevEnvironment from '../../utils/isDevEnvironment.js';
 import { S3RVER_ENDPOINT } from './s3rver.js';
 
 const s3 = new S3Client({

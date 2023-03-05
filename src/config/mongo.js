@@ -16,10 +16,9 @@ export default function mongoConfig() {
 
     mongoose.set('strictQuery', true);
     mongoose.connect(mongoUrl);
-
     mongoose.connection.once('open', () => {
       logger.info('✅ Established connection with mongodb');
-      resolve();
+      resolve(mongoose);
     });
 
     mongoose.connection.on('error', (error) => {

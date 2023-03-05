@@ -1,8 +1,8 @@
 import path from 'node:path';
 import S3rver from 's3rver';
-import logger from './logger.js';
-import fileDirName from '../utils/fileDirName.js';
-import { InternalServerError } from '../errors/BaseErrors.js';
+import logger from '../logger.js';
+import fileDirName from '../../utils/fileDirName.js';
+import { InternalServerError } from '../../errors/BaseErrors.js';
 
 const { __dirname } = fileDirName(import.meta.url);
 
@@ -35,7 +35,7 @@ export default function s3rverConfig() {
         logger.info(
           `✅ Established connection with S3rver at address ${address} and port ${port}`
         );
-        resolve();
+        resolve(instance);
       }
     });
   });

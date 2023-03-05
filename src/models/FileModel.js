@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import * as awsS3 from '../config/awsS3.js';
+import * as awsS3 from '../config/S3/awsS3.js';
 import filesUrl from '../utils/files/filesUrl.js';
 
 const FileSchema = new mongoose.Schema(

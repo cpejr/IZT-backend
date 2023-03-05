@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
-import logger from './logger.js';
-import { InternalServerError } from '../errors/BaseErrors.js';
+import logger from '../logger.js';
+import { InternalServerError } from '../../errors/BaseErrors.js';
 
 const transporterConfig = {
   development: {

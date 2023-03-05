@@ -1,4 +1,4 @@
-import { S3RVER_ENDPOINT } from '../../config/s3rver.js';
+import { S3RVER_ENDPOINT } from '../../config/S3/s3rver.js';
 import isDevEnvironment from '../isDevEnvironment.js';
 
 const filesUrl = isDevEnvironment

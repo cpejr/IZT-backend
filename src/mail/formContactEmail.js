@@ -1,4 +1,4 @@
-import Email from '../config/nodemailer.js';
+import Email from '../config/mail/nodemailer.js';
 import template from './template.js';
 
 export default function formContactEmail(inputData) {

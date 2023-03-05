@@ -1,6 +1,6 @@
 import MailDev from 'maildev';
-import logger from './logger.js';
-import { InternalServerError } from '../errors/BaseErrors.js';
+import logger from '../logger.js';
+import { InternalServerError } from '../../errors/BaseErrors.js';
 
 export const mailDevUrl = 'http://localhost:1080';
 export default function maildevConfig() {
@@ -20,7 +20,10 @@ export default function maildevConfig() {
         logger.info(
           `✅ Established connection with maildev in ${mailDevUrl}/maildev`
         );
-        resolve();
+        maildev.on('disconnected', () =>
+          logger.info('MailDev connection closed')
+        );
+        resolve(maildev);
       }
     });
   });
