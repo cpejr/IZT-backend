@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { ConflictError } from '../errors/BaseErrors.js';
 import FileModel from './FileModel.js';
 
 const ProductSchema = new mongoose.Schema(
@@ -60,6 +61,12 @@ ProductSchema.pre('remove', async function (next) {
 
 ProductSchema.statics.createWithFiles = async function (inputData) {
   const { documents, pictures, ...data } = inputData;
+
+  const foundProduct = await this.findOne({ name: data.name }).exec();
+  if (foundProduct)
+    throw new ConflictError(
+      `Value '${data.name}' of property 'name' already exists`
+    );
 
   const [createdPictures, createdDocuments] = await Promise.all([
     FileModel.uploadFiles({ files: pictures, ACL: 'public-read' }),

@@ -94,3 +94,5 @@ export async function configCors({
 
   return s3.send(new PutBucketCorsCommand(corsParams));
 }
+
+export default s3;
