@@ -10,12 +10,15 @@ import { UnauthorizedError, ForbiddenError } from '../errors/baseErrors.js';
 export const handleLogin = asyncHandler(async (req, res) => {
   const { email, password } = SessionValidator.login(req);
 
-  const foundUser = await UserModel.findOne({ email, isActive: true }).exec();
+  const foundUser = await UserModel.findOne({ email }).exec();
   if (!foundUser) throw new UnauthorizedError('Wrong email or password.');
 
   // Evaluate password
   const isMatch = await foundUser.comparePassword(password);
   if (!isMatch) throw new UnauthorizedError('Wrong email or password.');
+
+  // Evaluate if the user activated its account after registration
+  if (!foundUser.isActive) throw new ForbiddenError('Account inactive');
 
   // Evaluate token reuse
   const { cookies } = req;
