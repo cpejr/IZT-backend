@@ -62,7 +62,9 @@ export async function deleteFiles(keys) {
   }));
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
-    Delete: { Objects: objects },
+    Delete: {
+      Objects: objects,
+    },
   };
 
   return s3.send(new DeleteObjectsCommand(params));
@@ -80,7 +82,7 @@ export async function configCors({
   maxAgeSeconds = 3000,
 } = {}) {
   const config = {
-    AllowedHeaders: ['Authorization'],
+    AllowedHeaders: ['Authorization', 'Content-Type'],
     AllowedMethods: allowedMethods,
     AllowedOrigins: allowedOrigins,
     ExposeHeaders: exposeHeaders,

@@ -1,12 +1,21 @@
 import { Router } from 'express';
-import uploader from '../../config/multer.js';
+import createUploaderMiddleware from '../../config/multer.js';
 import * as ProductController from '../../controllers/ProductController.js';
+import { documentSpecs, pictureSpecs } from '../../utils/files/filesSpecs.js';
 
 const ProductRoutes = Router();
-const processFilesMiddeware = uploader.fields([
-  { name: 'pictures' },
-  { name: 'documents' },
-]);
+
+const processFilesMiddeware = createUploaderMiddleware({
+  allowedMimes: [
+    ...pictureSpecs.allowedMimeTypes,
+    ...documentSpecs.allowedMimeTypes,
+  ],
+  sizeLimitInMB: Math.max(
+    pictureSpecs.sizeLimitInMB,
+    documentSpecs.sizeLimitInMB
+  ),
+  fields: [{ name: 'pictures' }, { name: 'documents' }],
+});
 
 ProductRoutes.route('/')
   .get(ProductController.get)

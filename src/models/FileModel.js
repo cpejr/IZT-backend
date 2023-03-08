@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import * as awsS3 from '../config/S3/awsS3.js';
-import filesUrl from '../utils/files/filesUrl.js';
+import { S3RVER_ENDPOINT } from '../config/S3/s3rver.js';
+import isDevEnvironment from '../utils/isDevEnvironment.js';
 
 const FileSchema = new mongoose.Schema(
   {
@@ -29,27 +30,29 @@ const FileSchema = new mongoose.Schema(
 );
 
 FileSchema.pre('save', function (next) {
-  if (!this.url) {
-    this.url = `${filesUrl}/${this.key}`;
+  if (isDevEnvironment) {
+    this.url = `${S3RVER_ENDPOINT}/${process.env.AWS_BUCKET_NAME}/${this.key}`;
   }
   next();
 });
 FileSchema.pre('insertMany', function (next, docs) {
   docs.forEach((doc) => {
-    if (!doc.url) {
+    if (isDevEnvironment) {
       // eslint-disable-next-line no-param-reassign
-      doc.url = `${filesUrl}/${doc.key}`;
+      doc.url = `${S3RVER_ENDPOINT}/${process.env.AWS_BUCKET_NAME}/${doc.key}`;
     }
   });
   next();
 });
 
 FileSchema.statics.getOneFile = async function (key) {
-  const { Body: dataStream, ContentType: contentType } = await awsS3.getFile(
-    key
-  );
+  const {
+    Body: dataStream,
+    ContentType: contentType,
+    ContentLength: contentLength,
+  } = await awsS3.getFile(key);
 
-  return { contentType, dataStream };
+  return { dataStream, contentType, contentLength };
 };
 
 FileSchema.statics.uploadOneFile = async function ({ file, ACL }) {

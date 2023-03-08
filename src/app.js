@@ -9,6 +9,7 @@ import routes from './routes/index.js';
 import isDevEnvironment from './utils/isDevEnvironment.js';
 import { NotFoundError } from './errors/BaseErrors.js';
 import mailDevProxy from './middleware/mailDevProxy.js';
+import deleteFilesOnError from './middleware/deleteFilesOnError.js';
 
 // Inicializando instância do servidor express
 const app = express();
@@ -32,6 +33,7 @@ app.all('*', (req, res, next) => {
 });
 
 // Needs to be after the routes
+app.use(deleteFilesOnError);
 app.use(errorHandler);
 
 export default app;

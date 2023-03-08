@@ -11,8 +11,11 @@ export const download = asyncHandler(async (req, res) => {
   const foundFile = await FileModel.findById(_id).exec();
   if (!foundFile) throw new NotFoundError('File not found');
 
-  const { contentType, dataStream } = await FileModel.getOneFile(foundFile.key);
+  const { dataStream, contentType, contentLength } = await FileModel.getOneFile(
+    foundFile.key
+  );
 
   res.attachment(foundFile.name).type(contentType).status(SUCCESS_CODES.OK);
+  res.set({ 'Content-Length': contentLength });
   dataStream.pipe(res);
 });

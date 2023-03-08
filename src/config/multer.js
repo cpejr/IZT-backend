@@ -1,49 +1,50 @@
 import multer from 'multer';
-// import crypto from 'node:crypto';
-// import multerS3 from 'multer-s3';
-// import numToMegaBytes from '../utils/files/numToMegaBytes.js';
-// import s3 from './S3/awsS3';
-// import { BadRequest } from '../errors/BaseErrors';
+import multerS3 from 'multer-s3';
+import crypto from 'node:crypto';
+import s3 from './S3/awsS3.js';
+import numToMegaBytes from '../utils/files/numToMegaBytes.js';
+import { BadRequest } from '../errors/BaseErrors.js';
 
-const uploader = multer({ storage: multer.memoryStorage() });
-export default uploader;
+export default function createUploaderMiddleware({
+  bucket = process.env.AWS_BUCKET_NAME,
+  acl = 'public-read',
+  allowedMimes,
+  sizeLimitInMB,
+  fields,
+}) {
+  const metadata = (req, file, cb) => {
+    cb(null, { fieldname: file.fieldname });
+  };
 
-// export function createUploader({
-//   bucket = process.env.AWS_BUCKET_NAME,
-//   acl = 'public-read',
-//   fileSizeMB,
-//   allowedMimes,
-// }) {
-//   const storage = multerS3({
-//     s3,
-//     bucket,
-//     contentType: multerS3.AUTO_CONTENT_TYPE,
-//     acl,
-//     key: (req, file, cb) => {
-//       const bytesNumber = 16;
-//       crypto.randomBytes(bytesNumber, (err, hash) => {
-//         if (err) cb(err);
+  const storage = multerS3({
+    s3,
+    bucket,
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl,
+    metadata,
+    key: (req, file, cb) => {
+      const bytesNumber = 16;
+      crypto.randomBytes(bytesNumber, (err, hash) => {
+        if (err) cb(err);
 
-//         const fileName = `${hash.toString('hex')}-${file.originalname}`;
-//         cb(null, fileName);
-//       });
-//     },
-//   });
+        const fileName = `${hash.toString('hex')}-${file.originalname}`;
+        cb(null, `iztweb/${fileName}`);
+      });
+    },
+  });
 
-//   const limits = (req, file, cb) => {
-//     if (file.size <= numToMegaBytes(fileSizeMB)) {
-//       cb(null, true);
-//     } else {
-//       cb(new BadRequest());
-//     }
-//   };
-//   const fileFilter = (req, file, cb) => {
-//     if (allowedMimes.includes(file.mimetype)) {
-//       cb(null, true);
-//     } else {
-//       cb(new BadRequest('Invalid file type.'));
-//     }
-//   };
+  const fileFilter = (req, file, cb) => {
+    const mimeTypeIsValid = allowedMimes.includes(file.mimetype);
 
-//   return multer({ storage, limits, fileFilter });
-// }
+    if (!mimeTypeIsValid)
+      return cb(new BadRequest(`${file.fieldname} mime type is invalid`));
+
+    return cb(null, true);
+  };
+
+  return multer({
+    storage,
+    limits: { fileSize: numToMegaBytes(sizeLimitInMB) },
+    fileFilter,
+  }).fields(fields);
+}

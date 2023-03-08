@@ -69,8 +69,8 @@ ProductSchema.statics.createWithFiles = async function (inputData) {
     );
 
   const [createdPictures, createdDocuments] = await Promise.all([
-    FileModel.uploadFiles({ files: pictures, ACL: 'public-read' }),
-    FileModel.uploadFiles({ files: documents, ACL: 'public-read' }),
+    FileModel.insertMany(pictures),
+    FileModel.insertMany(documents),
   ]);
 
   const picturesIds = createdPictures.map(({ _id }) => _id);
@@ -90,21 +90,14 @@ ProductSchema.methods.updateFiles = async function (inputData) {
   if (inputData.documents) await FileModel.deleteFiles(this.documents);
 
   if (inputData?.pictures?.length) {
-    const newPictures = await FileModel.uploadFiles({
-      files: inputData.pictures,
-      ACL: 'public-read',
-    });
+    const newPictures = await FileModel.insertMany(inputData.pictures);
     newInputData.pictures = newPictures.map(({ _id }) => _id);
   }
 
   if (inputData?.documents?.length) {
-    const newDocuments = await FileModel.uploadFiles({
-      files: inputData.documents,
-      ACL: 'public-read',
-    });
+    const newDocuments = await FileModel.insertMany(inputData.documents);
     newInputData.documents = newDocuments.map(({ _id }) => _id);
   }
-
   return newInputData;
 };
 
