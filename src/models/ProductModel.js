@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ConflictError } from '../errors/BaseErrors.js';
+import { ConflictError } from '../errors/baseErrors.js';
 import FileModel from './FileModel.js';
 
 const ProductSchema = new mongoose.Schema(

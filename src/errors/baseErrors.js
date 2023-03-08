@@ -12,6 +12,7 @@ export class AppError extends Error {
     this.isOperational = isOperational;
   }
 }
+
 export class ValidationError extends AppError {
   constructor(message) {
     super(ERROR_NAMES.VALIDATION_ERROR, ERROR_CODES.FORBIDDEN, message, true);

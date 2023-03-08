@@ -2,7 +2,7 @@ import asyncHandler from '../utils/asyncHandler.js';
 import ProductModel from '../models/ProductModel.js';
 import * as ProductValidator from '../validators/ProductValidator.js';
 import { SUCCESS_CODES } from '../utils/constants.js';
-import { NotFoundError } from '../errors/BaseErrors.js';
+import { NotFoundError } from '../errors/baseErrors.js';
 
 export const get = asyncHandler(async (req, res) => {
   const inputFilters = ProductValidator.get(req);

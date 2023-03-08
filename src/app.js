@@ -7,7 +7,7 @@ import errorHandler from './middleware/errorHandler.js';
 import corsOptions from './config/cors.js';
 import routes from './routes/index.js';
 import isDevEnvironment from './utils/isDevEnvironment.js';
-import { NotFoundError } from './errors/BaseErrors.js';
+import { NotFoundError } from './errors/baseErrors.js';
 import mailDevProxy from './middleware/mailDevProxy.js';
 import deleteFilesOnError from './middleware/deleteFilesOnError.js';
 

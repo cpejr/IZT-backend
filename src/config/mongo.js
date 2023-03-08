@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { InternalServerError } from '../errors/BaseErrors.js';
+import { InternalServerError } from '../errors/baseErrors.js';
 import logger from './logger.js';
 
 mongoose.Promise = global.Promise;

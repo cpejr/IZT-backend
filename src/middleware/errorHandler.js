@@ -7,7 +7,7 @@ import {
   JwtExpiredError,
   ConflictError,
   InternalServerError,
-} from '../errors/BaseErrors.js';
+} from '../errors/baseErrors.js';
 import isDevEnvironment from '../utils/isDevEnvironment.js';
 
 // eslint-disable-next-line no-unused-vars

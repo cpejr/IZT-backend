@@ -1,6 +1,6 @@
 import MailDev from 'maildev';
 import logger from '../logger.js';
-import { InternalServerError } from '../../errors/BaseErrors.js';
+import { InternalServerError } from '../../errors/baseErrors.js';
 
 export const mailDevUrl = 'http://localhost:1080';
 export default function maildevConfig() {

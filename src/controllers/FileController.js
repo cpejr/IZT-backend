@@ -2,7 +2,7 @@ import FileModel from '../models/FileModel.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import * as FileValidator from '../validators/FileValidator.js';
 import { SUCCESS_CODES } from '../utils/constants.js';
-import { NotFoundError } from '../errors/BaseErrors.js';
+import { NotFoundError } from '../errors/baseErrors.js';
 
 // eslint-disable-next-line import/prefer-default-export
 export const download = asyncHandler(async (req, res) => {

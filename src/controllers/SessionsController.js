@@ -4,8 +4,8 @@ import formatExpiresAt from '../utils/formatExpiresAt.js';
 import asyncHandler from '../utils/asyncHandler.js';
 import UserModel from '../models/UserModel.js';
 import UserTokenModel from '../models/UserTokenModel.js';
-import { UnauthorizedError, ForbiddenError } from '../errors/BaseErrors.js';
 import * as SessionValidator from '../validators/SessionValidator.js';
+import { UnauthorizedError, ForbiddenError } from '../errors/baseErrors.js';
 
 export const handleLogin = asyncHandler(async (req, res) => {
   const { email, password } = SessionValidator.login(req);

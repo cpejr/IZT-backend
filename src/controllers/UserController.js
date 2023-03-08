@@ -2,7 +2,7 @@ import asyncHandler from '../utils/asyncHandler.js';
 import UserModel from '../models/UserModel.js';
 import * as UserValidator from '../validators/UserValidator.js';
 import { SUCCESS_CODES } from '../utils/constants.js';
-import { NotFoundError } from '../errors/BaseErrors.js';
+import { NotFoundError } from '../errors/baseErrors.js';
 
 export const get = asyncHandler(async (req, res) => {
   const inputFilters = UserValidator.get(req);

@@ -3,7 +3,7 @@ import multerS3 from 'multer-s3';
 import crypto from 'node:crypto';
 import s3 from './S3/awsS3.js';
 import numToMegaBytes from '../utils/files/numToMegaBytes.js';
-import { BadRequest } from '../errors/BaseErrors.js';
+import { BadRequest } from '../errors/baseErrors.js';
 
 export default function createUploaderMiddleware({
   bucket = process.env.AWS_BUCKET_NAME,

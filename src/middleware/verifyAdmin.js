@@ -1,4 +1,4 @@
-import { ForbiddenError } from '../errors/BaseErrors.js';
+import { ForbiddenError } from '../errors/baseErrors.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
 const verifyAdmin = asyncHandler(async (req, res, next) => {
