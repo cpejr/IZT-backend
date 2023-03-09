@@ -1,5 +1,6 @@
 import asyncHandler from '../utils/asyncHandler.js';
 import ProductModel from '../models/ProductModel.js';
+import CategoryModel from '../models/CategoryModel.js';
 import * as ProductValidator from '../validators/ProductValidator.js';
 import { SUCCESS_CODES } from '../utils/constants.js';
 import { NotFoundError } from '../errors/baseErrors.js';
@@ -15,6 +16,10 @@ export const get = asyncHandler(async (req, res) => {
 
 export const create = asyncHandler(async (req, res) => {
   const inputData = ProductValidator.create(req);
+
+  const foundCategory = await CategoryModel.findById(inputData.category).exec();
+  if (!foundCategory) throw new NotFoundError('Product category not found');
+
   const newProduct = await ProductModel.createWithFiles(inputData);
   res.status(SUCCESS_CODES.CREATED).json(newProduct);
 });
