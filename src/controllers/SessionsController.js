@@ -37,11 +37,16 @@ export const handleLogin = asyncHandler(async (req, res) => {
     });
   }
 
+  const {
+    createdAt,
+    updatedAt,
+    password: newPass,
+    ...acessTokenUserData
+  } = foundUser.toObject();
   // Create JWTs
   const accessToken = jwt.sign(
     {
-      userId: foundUser._id,
-      isAdmin: foundUser.isAdmin,
+      user: acessTokenUserData,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: +process.env.ACCESS_TOKEN_EXPIRE } // in seconds
@@ -93,16 +98,20 @@ export const handleRefreshToken = asyncHandler(async (req, res) => {
     throw new ForbiddenError('Token reuse');
   }
   const userId = foundToken.user._id.toString();
-  const { isAdmin } = foundToken.user;
-
   if (userId !== decoded.userId) throw new ForbiddenError('Tampered token');
 
   // Refresh token still valid
   await foundToken.delete(); // Invalidate actual refresh token
+
+  const {
+    createdAt,
+    updatedAt,
+    password: newPass,
+    ...acessTokenUserData
+  } = foundToken.user.toObject();
   const accessToken = jwt.sign(
     {
-      userId,
-      isAdmin,
+      user: acessTokenUserData,
     },
     process.env.ACCESS_TOKEN_SECRET,
     { expiresIn: +process.env.ACCESS_TOKEN_EXPIRE } // in seconds
