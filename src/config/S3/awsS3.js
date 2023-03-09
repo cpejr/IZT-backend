@@ -67,9 +67,7 @@ export async function deleteFiles(keys) {
     },
   };
 
-  console.log(await s3.send(new DeleteObjectsCommand(params)));
-
-  // return s3.send(new DeleteObjectsCommand(params));
+  return s3.send(new DeleteObjectsCommand(params));
 }
 
 export async function getCors() {
