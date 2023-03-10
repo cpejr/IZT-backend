@@ -8,6 +8,14 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    company: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+    },
     isAdmin: {
       type: Boolean,
       required: true,
@@ -23,12 +31,9 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
+      lowercase: true,
     },
     password: {
-      type: String,
-      required: true,
-    },
-    telephone: {
       type: String,
       required: true,
     },
@@ -45,18 +50,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
     },
     address: {
-      type: String,
-      required: true,
-    },
-    number: {
-      type: String,
-      required: true,
-    },
-    complement: {
-      type: String,
-      required: true,
-    },
-    zipCode: {
       type: String,
       required: true,
     },
