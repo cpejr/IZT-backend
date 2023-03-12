@@ -1,42 +1,10 @@
-import { ZodError } from 'zod';
 import logger from '../config/logger.js';
-import {
-  AppError,
-  BadRequest,
-  JwtInvalidError,
-  JwtExpiredError,
-  ConflictError,
-  InternalServerError,
-} from '../errors/baseErrors.js';
+import handler from '../errors/handlers/handler.js';
 import isDevEnvironment from '../utils/isDevEnvironment.js';
 
 // eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
-  let error;
-
-  if (err instanceof AppError) {
-    error = err;
-  } else if (err instanceof ZodError) {
-    // eslint-disable-next-line no-shadow
-    const message = err.errors.map(({ message }) => message).join('; ');
-    error = new BadRequest(`Request validation error(s): ${message}`);
-  } else if (err.name === 'ValidationError') {
-    const fields = Object.keys(err.errors);
-    const message = fields.map((field) => err.errors[field].message).join('; ');
-    error = new BadRequest(`DB validation error(s): ${message}`);
-  } else if (err?.code === 11000) {
-    const [key, value] = Object.entries(err.keyValue)[0];
-    error = new ConflictError(
-      `Value '${value}' of property '${key}' already exists`
-    );
-  } else if (err?.name === 'JsonWebTokenError') {
-    error = new JwtInvalidError();
-  } else if (err?.name === 'TokenExpiredError') {
-    error = new JwtExpiredError();
-  } else {
-    error = new InternalServerError(err?.message);
-  }
-
+  const error = handler(err);
   error.stack = err.stack;
 
   logger.error(

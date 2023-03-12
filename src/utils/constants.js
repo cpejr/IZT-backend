@@ -21,3 +21,8 @@ export const ERROR_NAMES = {
   VALIDATION_ERROR: 'ValidationError',
   INTERNAL_SERVER: 'InternalServerError',
 };
+
+export const EXIT_STATUS = {
+  FAILURE: 1,
+  SUCCESS: 0,
+};

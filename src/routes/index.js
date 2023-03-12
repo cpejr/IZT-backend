@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import CategoryRoutes from './CategoryRoutes/CategoryRoutes.js';
 import FileRoutes from './FileRoutes/FileRoutes.js';
-import FormContactRoutes from './FormContact/FormContact.js';
+import FormContactRoutes from './FormContactRoutes/FormContactRoutes.js';
 import ProductRoutes from './ProductRoutes/ProductRoutes.js';
 import SessionRoutes from './SessionRoutes/SessionRoutes.js';
 import UserRoutes from './UserRoutes/UserRoutes.js';

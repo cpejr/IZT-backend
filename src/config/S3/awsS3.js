@@ -60,6 +60,7 @@ export async function deleteFiles(keys) {
   const objects = keys.map((key) => ({
     Key: key,
   }));
+
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
     Delete: {

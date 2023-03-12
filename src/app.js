@@ -8,7 +8,6 @@ import corsOptions from './config/cors.js';
 import routes from './routes/index.js';
 import isDevEnvironment from './utils/isDevEnvironment.js';
 import { NotFoundError } from './errors/baseErrors.js';
-import mailDevProxy from './middleware/mailDevProxy.js';
 import deleteFilesOnError from './middleware/deleteFilesOnError.js';
 
 // Inicializando instância do servidor express
@@ -20,10 +19,8 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(helmet());
-if (isDevEnvironment) {
-  app.use(morgan('dev'));
-  app.use(mailDevProxy);
-}
+if (isDevEnvironment) app.use(morgan('dev'));
+
 // Routes
 app.use('/api', routes);
 
