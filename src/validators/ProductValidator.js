@@ -70,12 +70,9 @@ export const update = validate(
         .max(150, 'Product advantages must be a maximum of 150 characters')
         .optional(),
       documents: z // In case the user wants to delete the entire array of documents
-        .string()
-        .refine(
-          (value) => value === '',
-          'Invalid "documents" input in the request body'
-        )
-        .transform(() => []) // Transform the property in a empty array
+        .array(z.string())
+        .length(1, 'Invalid "documents" input in the request body') // documents = [""]
+        .transform(() => []) // Transform value in a empty array --> documents = []
         .optional(),
     }),
     // Here is necessary to treat the object that comes from multer lib

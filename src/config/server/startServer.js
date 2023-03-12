@@ -9,14 +9,15 @@ import { EXIT_STATUS } from '../../utils/constants.js';
 
 export default async function startServer() {
   try {
+    let s3rverConnection;
     if (isDevEnvironment) {
-      await s3rverConfig();
+      s3rverConnection = await s3rverConfig();
     }
 
     const databaseConnection = await mongoConfig();
     const serverConnection = await expressConfig();
 
-    shutdownServer({ serverConnection, databaseConnection });
+    shutdownServer({ serverConnection, databaseConnection, s3rverConnection });
   } catch (err) {
     logger.error(err, 'App exited with failure');
     process.exit(EXIT_STATUS.FAILURE);

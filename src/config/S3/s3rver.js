@@ -17,7 +17,6 @@ export default function s3rverConfig() {
       address: ADDRESS,
       silent: false,
       directory: path.resolve(__dirname, '../../../temp/uploads'),
-      resetOnClose: true,
       configureBuckets: [
         {
           name: process.env.AWS_BUCKET_NAME,

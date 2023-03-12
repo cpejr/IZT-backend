@@ -39,7 +39,6 @@ export const update = asyncHandler(async (req, res) => {
 
 export const destroy = asyncHandler(async (req, res) => {
   const { _id } = ProductValidator.destroy(req);
-
   const foundProduct = await ProductModel.findById(_id).exec();
   if (!foundProduct) throw new NotFoundError('Product not found');
 

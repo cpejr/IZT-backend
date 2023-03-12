@@ -4,7 +4,7 @@ import * as awsS3 from '../config/S3/awsS3.js';
 // TODO: add suport for multer .single .array .any
 const deleteFilesOnError = async (err, req, res, next) => {
   const { files } = req;
-  if (!files) return next(err);
+  if (!files || !Object.keys(files)) return next(err);
 
   const filesObjs = Object.values(files).reduce(
     (acc, fileObj) => [...acc, ...fileObj],
