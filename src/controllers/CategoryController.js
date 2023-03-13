@@ -7,7 +7,7 @@ import { NotFoundError } from '../errors/baseErrors.js';
 export const get = asyncHandler(async (req, res) => {
   const inputFilters = CategoryValidator.get(req);
   const categories = await CategoryModel.find(inputFilters)
-    .populate('products')
+    .populate({ path: 'products', populate: { path: 'pictures' } })
     .exec();
   res.status(SUCCESS_CODES.OK).json(categories);
 });
