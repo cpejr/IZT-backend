@@ -87,7 +87,7 @@ ProductSchema.methods.updateFiles = async function (inputData) {
   const newInputData = { ...inputData };
 
   if (inputData.pictures) await FileModel.deleteFiles(this.pictures);
-  if (inputData.document) await FileModel.deleteFiles(this.documents);
+  if (inputData.documents) await FileModel.deleteFiles(this.documents);
 
   if (inputData?.pictures?.length) {
     const newPictures = await FileModel.insertMany(inputData.pictures);

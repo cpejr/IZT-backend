@@ -9,6 +9,7 @@ export default function expressConfig() {
       if (err) {
         reject(err);
       } else {
+        logger.info(`✅ Maildev service started at http://0.0.0.0:1080/#/`);
         logger.info(
           `✅ Server started at port ${PORT} and with a process pid ${process.pid}`
         );
